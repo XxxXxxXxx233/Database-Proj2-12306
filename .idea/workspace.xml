@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b70f0a0d-e800-4279-8742-f4f8281cd5ac" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1aUIB7I5iHFLA992VOjNMlFeP0B" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/jsoup-1.13.1.jar!/" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\lib" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Crawler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Crawler" />
+      <module name="DBMS_proj2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Crawler" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b70f0a0d-e800-4279-8742-f4f8281cd5ac" name="Default Changelist" comment="" />
+      <created>1586783606038</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586783606038</updated>
+      <workItem from="1586783609142" duration="1000" />
+      <workItem from="1586783618231" duration="8040000" />
+      <workItem from="1586829796906" duration="2073000" />
+      <workItem from="1586838986731" duration="685000" />
+      <workItem from="1586871517381" duration="1434000" />
+      <workItem from="1586940106439" duration="4027000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586784381497">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1586784381497" />
+    <state x="634" y="215" key="FileChooserDialogImpl" timestamp="1586784029637">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="634" y="215" key="FileChooserDialogImpl/0.0.1707.920@0.0.1707.920" timestamp="1586784029637" />
+    <state width="1663" height="242" key="GridCell.Tab.0.bottom" timestamp="1586943426134">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="242" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
+    <state width="1663" height="242" key="GridCell.Tab.0.center" timestamp="1586943426134">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="242" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
+    <state width="1663" height="242" key="GridCell.Tab.0.left" timestamp="1586943426134">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="242" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
+    <state width="1663" height="242" key="GridCell.Tab.0.right" timestamp="1586943426134">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="242" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
+    <state x="334" y="35" key="SettingsEditor" timestamp="1586784032679">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="334" y="35" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1586784032679" />
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1586790401696">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/0.0.1707.920@0.0.1707.920" timestamp="1586790401696" />
+  </component>
+</project>
