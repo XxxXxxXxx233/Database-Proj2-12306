@@ -4,17 +4,17 @@ import java.io.*;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class Crawler {
 
-    private static String stationDataFolder = "./stationData";
-    private static String trainDataFolder = "./trainData";
     private static String userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36";
 
     public static void main(String[] args) throws IOException, InterruptedException {
 //        stationDataCrawler();
 //        trainDataCrawler();
+//        cityStationCrawler();
 //        cityProvinceDataCrawler();
     }
 
@@ -27,6 +27,7 @@ public class Crawler {
                 .userAgent(userAgent)
                 .get();
         Elements province = docProvince.getElementsByClass("table").select("a");
+        String stationDataFolder = "./stationData";
         File data = new File(stationDataFolder);
         if(!data.exists())
             data.mkdir();
@@ -89,6 +90,7 @@ public class Crawler {
                 .userAgent(userAgent)
                 .get();
         Elements province = docProvince.getElementsByClass("table").select("a");
+        String trainDataFolder = "./trainData";
         File data = new File(trainDataFolder);
         if(!data.exists())
             data.mkdir();
@@ -167,31 +169,75 @@ public class Crawler {
         }
     }
 
-    public static void cityProvinceDataCrawler() throws IOException {
-        String web = "http://www.maps7.com/china_province.php";
+    public static void cityStationCrawler() throws IOException, InterruptedException {
+        String web = "http://huochezhan.114piaowu.com";
+
         Document doc = Jsoup
                 .connect(web)
                 .userAgent(userAgent)
                 .get();
-        Elements province = doc.select("h4");
-        String allProvince = province.text();
-        Elements all = doc.select("a");
-        int count = 46;
-        BufferedWriter cityProvince = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./cityProvinceData.csv")));
-        StringBuilder sb = new StringBuilder();
-        for(int i=count; i<all.size(); i++){
-            String name = all.get(i).text();
-            if(allProvince.indexOf(name) > 0){
+        Element content = doc.getElementById("content");
+        Elements city = content.select("span").select("a");
+        System.out.println(city.text());
+        BufferedWriter cityStation = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./cityStationData.csv")));
+        for(int i=0; i<city.size(); i++)
+        {
+            try{
+                String nameCity = city.get(i).text();
+                String href_to_each_city = city.get(i).attr("href");
+                Document docCity = Jsoup
+                        .connect(href_to_each_city)
+                        .userAgent(userAgent)
+                        .referrer(web)
+                        .get();
+                Elements stationContent = docCity.getElementsByClass("train_list");
+                Elements nameStation = stationContent.select("li").select("dl").select("dt").select("a");
+                StringBuilder sb = new StringBuilder();
+                sb.append(nameCity);
+                for(int j=0; j<nameStation.size(); j++){
+                    sb.append("," + nameStation.get(j).text());
+                }
                 sb.append("\n");
+                cityStation.write(sb.toString());
+                System.out.println(nameCity);
+                Thread.sleep((int) (500 * Math.random()));
+            } catch (HttpStatusException e) {
+                System.out.println("404 when i = " + i);
+                break;
             }
-            sb.append(name + " ");
         }
-        Scanner in = new Scanner(sb.toString());
-        while(in.hasNextLine()){
-            String line = in.nextLine();
-            line = line.trim();
-            line = line.replace(' ', ',');
-            cityProvince.write(line + "\n");
+        cityStation.close();
+    }
+
+    public static void cityProvinceDataCrawler() throws IOException, InterruptedException {
+        String web = "http://huochezhan.114piaowu.com";
+
+        Document doc = Jsoup
+                .connect(web)
+                .userAgent(userAgent)
+                .get();
+        Element content = doc.getElementById("content");
+        Elements all = content.select("dd");
+        BufferedWriter cityProvince = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./cityProvinceData.csv")));
+        for(int i=0; i<all.size(); i++){
+            Elements city = all.get(i).select("a");
+            if(i == 0) {
+                String[] str = city.text().split(" ");
+                for(int j=0; j<str.length; j++)
+                {
+                    cityProvince.write(str[j] + "\n");
+                }
+            } else {
+                StringBuilder sb = new StringBuilder();
+                String province = city.get(0).text();
+                sb.append(province.substring(0, province.length()-3));
+                for(int j=1; j<city.size(); j++)
+                {
+                    String nameCity = city.get(j).text();
+                    sb.append(",").append(nameCity);
+                }
+                cityProvince.write(sb.toString() + "\n");
+            }
         }
         cityProvince.close();
     }
