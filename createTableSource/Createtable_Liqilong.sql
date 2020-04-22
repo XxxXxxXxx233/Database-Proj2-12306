@@ -4,9 +4,6 @@ create table users (user_id serial primary key,
                     phone_number varchar(45),
                     unique (id_card_num));
 
-create table order_and_ticket(order_id int primary key,
-                            ticket_id int primary key);
-
 create table order(order_id serial primary key ,
                    user_id int not null ,
                    ticket_id int not null,
@@ -25,6 +22,7 @@ create table ticket_type(ticket_type_id serial primary key ,
                     arrive_station int not null ,
                     rest_num int,
                     price double precision,
+					seat_num int not null,
                     unique (train_id,dates,seat_type,depart_station,arrive_station),
                     foreign key (train_id) references train(train_id),
                     foreign key (depart_station) references station(station_id),
@@ -34,7 +32,6 @@ create table ticket_type(ticket_type_id serial primary key ,
 create table ticket(ticket_id serial primary key ,
                     ticket_type int not null,
                     carriage_num int not null,
-                    seat_num int not null,
                     foreign key (ticket_type) references ticket_type(ticket_type_id)
                     );
 
