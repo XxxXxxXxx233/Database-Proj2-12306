@@ -7,10 +7,11 @@ create table users (user_id serial primary key,
 create table orders(order_id serial primary key,
                    user_id int not null,
                    ticket_id int not null,
-                   create_date date not null,
+                   create_datetime datetime not null,
                    order_status char not null,
                    depart_city int not null,
                    arrive_city int not null,
+                   status varchar(3) not null,
                    foreign key(user_id) references users(user_id)
                    );
 
@@ -32,6 +33,7 @@ create table ticket_type(ticket_type_id serial primary key,
 create table ticket(ticket_id serial primary key,
                     ticket_type int not null,
                     carriage_num int not null,
+                    status char not null,
                     foreign key (ticket_type) references ticket_type(ticket_type_id)
                     );
 
