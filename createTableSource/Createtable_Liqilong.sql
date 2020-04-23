@@ -33,8 +33,9 @@ create table ticket_type(ticket_type_id serial primary key,
 
 create table ticket(ticket_id serial primary key,
                     ticket_type int not null,
-                    carriage_num int not null,
-                    status char(3) not null,
+                    carriage_position int not null,
+                    seat_position char(3) not null,
+                    avaliable char not null,
                     foreign key (ticket_type) references ticket_type(ticket_type_id)
                     );
 
