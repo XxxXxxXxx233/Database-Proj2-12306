@@ -1,3 +1,5 @@
+package Data_crawler_and_processor;
+
 import java.util.*;
 import java.io.*;
 
@@ -8,11 +10,12 @@ public class DataProcessor {
     private static Map<String, Integer> trainID = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        CreateTableCity();
+/*        CreateTableCity();
         CreateTableStation();
         CreateTableTrain();
         CreateTableTrainAndStation();
-        CreateTableTicketType();
+        CreateTableTicketType();*/
+        CreateTableTicket();
     }
 
     public static void CreateTableCity() throws IOException {
@@ -240,6 +243,57 @@ public class DataProcessor {
         }
         ticket_type.close();
         System.out.println("ticket_type Count = " + count);
+    }
+
+    public static void CreateTableTicket() throws IOException {
+        File f = new File("./createTableSource/Ticket_Type.csv");
+        Scanner in = new Scanner(f);
+        BufferedWriter ticket = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./createTableSource/Ticket.csv")));
+        ticket.write("ticket_id,ticket_type,carriage_position,seat_position,available\n");
+        String line = in.nextLine();
+        String[] business = {"A", "C", "F"};
+        String[] first = {"A", "C", "D", "F"};
+        String[] second = {"A", "B", "C", "D", "F"};
+        int count = 1;
+        while(in.hasNextLine())
+        {
+            line = in.nextLine();
+            String[] str = line.split(",");
+            String type_id = str[0];
+            String type = str[3];
+            if(type.equals("business_class")) {
+                int row = 0;
+                for(int i=0; i<50; i++) {
+                    if(i%3 == 0) {
+                        row++;
+                    }
+                    ticket.write(count + "," + type_id + "," + 1 + "," + row + business[i%3] + "," + "Y\n");
+                    count++;
+                }
+            } else if(type.equals("first_class")) {
+                int row = 0;
+                for(int i=0; i<100; i++) {
+                    if(i%4 == 0) {
+                        row++;
+                    }
+                    ticket.write(count + "," + type_id + "," + 2 + "," + row + first[i%4] + "," + "Y\n");
+                    count++;
+                }
+            } else {
+                for(int j=0; j<4; j++){
+                    int row = 0;
+                    for(int i=0; i<50; i++) {
+                        if(i%5 == 0) {
+                            row++;
+                        }
+                        ticket.write(count + "," + type_id + "," + (3+j) + "," + row + second[i%5] + "," + "Y\n");
+                        count++;
+                    }
+                }
+            }
+        }
+        ticket.close();
+        in.close();
     }
 
     public static void mergeAndRemovePostfix() throws IOException {

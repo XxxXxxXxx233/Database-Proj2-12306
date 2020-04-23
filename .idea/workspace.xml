@@ -11,6 +11,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -24,7 +25,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/jsoup-1.13.1.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/druid-1.0.9.jar!/" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -34,22 +35,55 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\Resources" />
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2" />
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\src\Resources" />
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\otherData" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\lib" />
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2\src" />
+      <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.DataProcessor">
     <configuration name="Crawler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Crawler" />
+      <option name="MAIN_CLASS_NAME" value="Data_crawler_and_processor.Crawler" />
       <module name="DBMS_proj2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DataProcessor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Data_crawler_and_processor.DataProcessor" />
+      <module name="DBMS_proj2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test" />
+      <module name="DBMS_proj2" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Crawler" />
+      <item itemvalue="Application.DataProcessor" />
+      <item itemvalue="Application.test" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DataProcessor" />
+        <item itemvalue="Application.test" />
         <item itemvalue="Application.Crawler" />
       </list>
     </recent_temporary>
@@ -69,7 +103,18 @@
       <workItem from="1586829796906" duration="2073000" />
       <workItem from="1586838986731" duration="685000" />
       <workItem from="1586871517381" duration="1434000" />
-      <workItem from="1586940106439" duration="4027000" />
+      <workItem from="1586940106439" duration="4778000" />
+      <workItem from="1587181125969" duration="1850000" />
+      <workItem from="1587183030803" duration="2250000" />
+      <workItem from="1587189528091" duration="504000" />
+      <workItem from="1587304888480" duration="8202000" />
+      <workItem from="1587382439137" duration="7872000" />
+      <workItem from="1587392760442" duration="6888000" />
+      <workItem from="1587476148230" duration="9023000" />
+      <workItem from="1587525502032" duration="2651000" />
+      <workItem from="1587612752551" duration="3123000" />
+      <workItem from="1587619169382" duration="902000" />
+      <workItem from="1587629410197" duration="4173000" />
     </task>
     <servers />
   </component>
@@ -77,37 +122,57 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586784381497">
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587481340132">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1586784381497" />
-    <state x="634" y="215" key="FileChooserDialogImpl" timestamp="1586784029637">
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1587481340132" />
+    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser" timestamp="1587481966359">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="634" y="215" key="FileChooserDialogImpl/0.0.1707.920@0.0.1707.920" timestamp="1586784029637" />
-    <state width="1663" height="242" key="GridCell.Tab.0.bottom" timestamp="1586943426134">
+    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser/0.0.1707.920@0.0.1707.920" timestamp="1587481966359" />
+    <state x="695" y="357" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1587630882808">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="242" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
-    <state width="1663" height="242" key="GridCell.Tab.0.center" timestamp="1586943426134">
+    <state x="695" y="357" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1707.920@0.0.1707.920" timestamp="1587630882808" />
+    <state x="584" y="225" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587526402091">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="242" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
-    <state width="1663" height="242" key="GridCell.Tab.0.left" timestamp="1586943426134">
+    <state x="584" y="225" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1707.920@0.0.1707.920" timestamp="1587526402091" />
+    <state x="634" y="215" key="FileChooserDialogImpl" timestamp="1587526418891">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="242" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
-    <state width="1663" height="242" key="GridCell.Tab.0.right" timestamp="1586943426134">
+    <state x="634" y="215" key="FileChooserDialogImpl/0.0.1707.920@0.0.1707.920" timestamp="1587526418891" />
+    <state width="1663" height="244" key="GridCell.Tab.0.bottom" timestamp="1587634493968">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="242" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1586943426134" />
-    <state x="334" y="35" key="SettingsEditor" timestamp="1586784032679">
+    <state width="1663" height="244" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
+    <state width="1663" height="244" key="GridCell.Tab.0.center" timestamp="1587634493968">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="334" y="35" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1586784032679" />
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1586790401696">
+    <state width="1663" height="244" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
+    <state width="1663" height="244" key="GridCell.Tab.0.left" timestamp="1587634493968">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/0.0.1707.920@0.0.1707.920" timestamp="1586790401696" />
+    <state width="1663" height="244" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
+    <state width="1663" height="244" key="GridCell.Tab.0.right" timestamp="1587634493968">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="244" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
+    <state x="334" y="35" key="SettingsEditor" timestamp="1587526422851">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="334" y="35" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1587526422851" />
+    <state x="584" y="225" key="extract.method.dialog" timestamp="1587311712489">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="584" y="225" key="extract.method.dialog/0.0.1707.920@0.0.1707.920" timestamp="1587311712489" />
+    <state x="241" y="71" key="new project wizard" timestamp="1587618884680">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="241" y="71" key="new project wizard/0.0.1707.920@0.0.1707.920" timestamp="1587618884680" />
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1587482150088">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/0.0.1707.920@0.0.1707.920" timestamp="1587482150088" />
   </component>
 </project>
