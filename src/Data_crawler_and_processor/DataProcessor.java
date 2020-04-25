@@ -14,8 +14,8 @@ public class DataProcessor {
         CreateTableStation();
         CreateTableTrain();
         CreateTableTrainAndStation();
-        CreateTableTicketType();*/
-        CreateTableTicket();
+        CreateTableTicketType();
+        CreateTableTicket();*/
     }
 
     public static void CreateTableCity() throws IOException {
