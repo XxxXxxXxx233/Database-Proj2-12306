@@ -7,11 +7,25 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -35,7 +49,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -53,7 +67,7 @@
       <recent name="C:\Users\18038\IdeaProjects\DBMS_proj2" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.DataProcessor">
+  <component name="RunManager" selected="Application.test">
     <configuration name="Crawler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Data_crawler_and_processor.Crawler" />
       <module name="DBMS_proj2" />
@@ -82,8 +96,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DataProcessor" />
         <item itemvalue="Application.test" />
+        <item itemvalue="Application.DataProcessor" />
         <item itemvalue="Application.Crawler" />
       </list>
     </recent_temporary>
@@ -114,7 +128,11 @@
       <workItem from="1587525502032" duration="2651000" />
       <workItem from="1587612752551" duration="3123000" />
       <workItem from="1587619169382" duration="902000" />
-      <workItem from="1587629410197" duration="4173000" />
+      <workItem from="1587629410197" duration="6814000" />
+      <workItem from="1587794791916" duration="12673000" />
+      <workItem from="1587808044376" duration="135000" />
+      <workItem from="1587816490240" duration="10970000" />
+      <workItem from="1587827582755" duration="122000" />
     </task>
     <servers />
   </component>
@@ -122,14 +140,18 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587481340132">
+    <state x="446" y="119" key="#SQL_Dialects" timestamp="1587795565246">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1587481340132" />
-    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser" timestamp="1587481966359">
+    <state x="446" y="119" key="#SQL_Dialects/0.0.1707.920@0.0.1707.920" timestamp="1587795565246" />
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587825704380">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser/0.0.1707.920@0.0.1707.920" timestamp="1587481966359" />
+    <state x="309" y="116" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1707.920@0.0.1707.920" timestamp="1587825704380" />
+    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser" timestamp="1587820117242">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="659" y="188" key="#com.intellij.ide.util.MemberChooser/0.0.1707.920@0.0.1707.920" timestamp="1587820117242" />
     <state x="695" y="357" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1587630882808">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
@@ -142,26 +164,42 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="634" y="215" key="FileChooserDialogImpl/0.0.1707.920@0.0.1707.920" timestamp="1587526418891" />
-    <state width="1663" height="244" key="GridCell.Tab.0.bottom" timestamp="1587634493968">
+    <state width="1663" height="311" key="GridCell.Tab.0.bottom" timestamp="1587827551853">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="244" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
-    <state width="1663" height="244" key="GridCell.Tab.0.center" timestamp="1587634493968">
+    <state width="1663" height="311" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1587827551853" />
+    <state width="1663" height="311" key="GridCell.Tab.0.center" timestamp="1587827551853">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="244" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
-    <state width="1663" height="244" key="GridCell.Tab.0.left" timestamp="1587634493968">
+    <state width="1663" height="311" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1587827551853" />
+    <state width="1663" height="311" key="GridCell.Tab.0.left" timestamp="1587827551853">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="244" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
-    <state width="1663" height="244" key="GridCell.Tab.0.right" timestamp="1587634493968">
+    <state width="1663" height="311" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1587827551853" />
+    <state width="1663" height="311" key="GridCell.Tab.0.right" timestamp="1587827551853">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state width="1663" height="244" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1587634493968" />
-    <state x="334" y="35" key="SettingsEditor" timestamp="1587526422851">
+    <state width="1663" height="311" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1587827551853" />
+    <state width="1663" height="300" key="GridCell.Tab.1.bottom" timestamp="1587808013442">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="334" y="35" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1587526422851" />
+    <state width="1663" height="300" key="GridCell.Tab.1.bottom/0.0.1707.920@0.0.1707.920" timestamp="1587808013442" />
+    <state width="1663" height="300" key="GridCell.Tab.1.center" timestamp="1587808013442">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="300" key="GridCell.Tab.1.center/0.0.1707.920@0.0.1707.920" timestamp="1587808013442" />
+    <state width="1663" height="300" key="GridCell.Tab.1.left" timestamp="1587808013442">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="300" key="GridCell.Tab.1.left/0.0.1707.920@0.0.1707.920" timestamp="1587808013442" />
+    <state width="1663" height="300" key="GridCell.Tab.1.right" timestamp="1587808013442">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state width="1663" height="300" key="GridCell.Tab.1.right/0.0.1707.920@0.0.1707.920" timestamp="1587808013442" />
+    <state x="334" y="35" key="SettingsEditor" timestamp="1587796184249">
+      <screen x="0" y="0" width="1707" height="920" />
+    </state>
+    <state x="334" y="35" key="SettingsEditor/0.0.1707.920@0.0.1707.920" timestamp="1587796184249" />
     <state x="584" y="225" key="extract.method.dialog" timestamp="1587311712489">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
@@ -170,9 +208,9 @@
       <screen x="0" y="0" width="1707" height="920" />
     </state>
     <state x="241" y="71" key="new project wizard/0.0.1707.920@0.0.1707.920" timestamp="1587618884680" />
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1587482150088">
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup" timestamp="1587820413881">
       <screen x="0" y="0" width="1707" height="920" />
     </state>
-    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/0.0.1707.920@0.0.1707.920" timestamp="1587482150088" />
+    <state x="516" y="195" width="672" height="678" key="search.everywhere.popup/0.0.1707.920@0.0.1707.920" timestamp="1587820413881" />
   </component>
 </project>
