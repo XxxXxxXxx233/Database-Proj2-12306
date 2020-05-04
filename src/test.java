@@ -4,35 +4,17 @@ import java.util.Scanner;
 public class test {
     public static void main(String[] args) throws SQLException {
         DatabaseOperation d = new DatabaseOperation();
-//        System.out.println(d.searchStationInProvince("北京"));
-//        System.out.println(d.searchStationInCity("深圳"));
-//        System.out.println(d.searchTrainInformationInOneStation("尼木"));
-//        System.out.println(d.searchTrainBasicInformation("G6160"));
-//        System.out.println(d.searchTrainDetailInformation("Z8804"));
-/*        d.buySomeTickets(3, "深圳北", "广州南");
-        System.out.println();
-        d.searchOrderAndTicket(3);
-        System.out.println();
-        d.returnSomeTickets(3);
-        System.out.println();
-
-        d.buySomeTickets(3, "深圳北", "广州南");
-        System.out.println();
-        d.searchOrderAndTicket(3);
-        System.out.println();
-        d.returnSomeTickets(3);
-        System.out.println();
-        d.searchOrderAndTicket(3);
-        System.out.println();
-
-        d.buySomeTickets(3, "深圳北", "广州南");
-        System.out.println();
-        d.searchOrderAndTicket(3);
-        System.out.println();*/
-
         Scanner in = new Scanner(System.in);
         UserPlatform up = new UserPlatform();
-        up.userLogIn();
+        System.out.println("1 -> 注册新用户");
+        System.out.println("2 -> 登录");
+        System.out.print("请输入: ");
+        if(in.nextInt() == 1) {
+            up.userRegister();
+        } else {
+            up.userLogIn();
+        }
+
         System.out.println("-1 -> 退出");
         System.out.println("1 -> 查询省份内的所有车站");
         System.out.println("2 -> 查询城市内的所有车站");
@@ -48,7 +30,18 @@ public class test {
         while (num != -1) {
             int user = up.getCurrentUser();
             if(user == -1) {
-                up.userLogIn();
+                System.out.println("-1 -> 退出");
+                System.out.println("1 -> 注册新用户");
+                System.out.println("2 -> 登录");
+                System.out.print("请输入: ");
+                int check = in.nextInt();
+                if(check == -1) {
+                    break;
+                } else if(check == 1) {
+                    up.userRegister();
+                } else {
+                    up.userLogIn();
+                }
             }
             System.out.print("请输入想进行的操作: ");
             num = in.nextInt();

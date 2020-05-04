@@ -33,6 +33,7 @@ public class UserPlatform implements DataModification {
         String password = in.next();
         d.userRegister(username, id, phone_number, account, password);
         System.out.println("注册成功");
+        currentUser = Integer.parseInt(d.getUserID(account));
     }
 
     @Override
