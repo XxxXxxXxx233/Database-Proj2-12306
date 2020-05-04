@@ -5,9 +5,10 @@ public class test {
         DatabaseOperation d = new DatabaseOperation();
 //        System.out.println(d.searchStationInProvince("北京"));
 //        System.out.println(d.searchStationInCity("深圳"));
+//        System.out.println(d.searchTrainInformationInOneStation("尼木"));
 //        System.out.println(d.searchTrainBasicInformation("G6160"));
-//        System.out.println(d.searchTrainDetailInformation("G6160"));
-        d.buySomeTickets(3, "深圳北", "广州南");
+//        System.out.println(d.searchTrainDetailInformation("Z8804"));
+/*        d.buySomeTickets(3, "深圳北", "广州南");
         System.out.println();
         d.searchOrderAndTicket(3);
         System.out.println();
@@ -26,6 +27,14 @@ public class test {
         d.buySomeTickets(3, "深圳北", "广州南");
         System.out.println();
         d.searchOrderAndTicket(3);
-        System.out.println();
+        System.out.println();*/
+
+        UserPlatform up = new UserPlatform();
+        up.userLogIn();
+        int user = up.getCurrentUser();
+//        d.buySomeTickets(user, "深圳北", "广州南");
+        d.searchOrderAndTicket(user);
+        d.returnSomeTickets(user);
+        d.searchOrderAndTicket(user);
     }
 }

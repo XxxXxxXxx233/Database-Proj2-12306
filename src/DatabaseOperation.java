@@ -157,6 +157,57 @@ public class DatabaseOperation implements BasicOperation {
     }
 
     @Override
+    public String searchTrainInformationInOneStation(String stationName) throws SQLException {
+        System.out.println("---------- 经过" + stationName + "站的列车信息如下: ----------");
+        System.out.println("车次\t站名\t到达时间\t出发时间\t耗时\t里程\t前一站\t后一站");
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sqlDetailInfo = "select (select train_code from train t where sub1.train_id = t.train_id)                  as train_code,\n" +
+                "       (select station_name from station s where sub1.station_id = s.station_id)          as station_name,\n" +
+                "       sub1.arrival_time,\n" +
+                "       sub1.departure_time,\n" +
+                "       sub1.total_time,\n" +
+                "       sub1.miles,\n" +
+                "       (select s1.station_name from station s1 where s1.station_id = sub1.former_station) as former_station,\n" +
+                "       (select s1.station_name from station s1 where s1.station_id = sub1.latter_station) as latter_station\n" +
+                "from (\n" +
+                "         select *\n" +
+                "         from train_and_station\n" +
+                "         where station_id = (select station_id from station s where station_name = ''||?||'')\n" +
+                "     ) sub1;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sqlDetailInfo);
+            preparedStatement.setString(1, stationName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("train_code")).append("\t");
+                sb.append(resultSet.getString("station_name")).append("\t");
+                sb.append(resultSet.getString("arrival_time")).append("\t");
+                sb.append(resultSet.getString("departure_time")).append("\t");
+                sb.append(resultSet.getString("total_time")).append("\t");
+                sb.append(resultSet.getString("miles")).append("\t");
+                if(resultSet.getString("former_station") == null) {
+                    sb.append("无").append("\t");
+                } else {
+                    sb.append(resultSet.getString("former_station")).append("\t");
+                }
+                if(resultSet.getString("latter_station") == null) {
+                    sb.append("无").append("\t");
+                } else {
+                    sb.append(resultSet.getString("latter_station")).append("\t");
+                }
+                sb.append(System.lineSeparator());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
     public String searchTrainFromOneStationToAnother(String fromStation, String toStation) throws SQLException {
         System.out.println("---------- 从" + fromStation + "站到" + toStation + "站有如下列车可选: ----------");
         System.out.println("车次\t类型\t出发站\t出发时间\t到达站\t到达时间");
@@ -290,7 +341,8 @@ public class DatabaseOperation implements BasicOperation {
         in.nextLine();
         if(text.equals("是")) {
             System.out.print("请输入要查询的订单id: ");
-            int orderID = in.nextInt();
+            ArrayList<Integer> orderIDArr = getOrderInformation(userID);
+            int orderID = orderIDArr.get(in.nextInt() - 1);
             System.out.println("---------- 该订单下所有车票如下: ----------");
             System.out.print(searchTicketInformationInAnOrder(orderID));
         }
@@ -301,7 +353,8 @@ public class DatabaseOperation implements BasicOperation {
         Connection con = cp.getConnection();
         ResultSet resultSet;
         StringBuilder sb = new StringBuilder();
-        String sql = "select sub1.order_id                                                       as order_id,\n" +
+        String sql = "select row_number() over (order by sub1.create_datetime)                   as id,\n" +
+                "       sub1.order_id                                                       as order_id,\n" +
                 "       sub1.create_datetime                                                as create_time,\n" +
                 "       sub1.order_status                                                   as order_status,\n" +
                 "       (select c.city_name from city c where sub1.depart_city = c.city_id) as depart_city,\n" +
@@ -319,7 +372,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(1, userID);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                sb.append(resultSet.getString("order_id")).append("\t");
+                sb.append(resultSet.getString("id")).append("\t");
                 sb.append(resultSet.getString("create_time")).append("\t");
                 sb.append(resultSet.getString("order_status")).append("\t");
                 sb.append(resultSet.getString("depart_city")).append("\t");
@@ -482,6 +535,132 @@ public class DatabaseOperation implements BasicOperation {
                 indexArr.add(Integer.parseInt(index[i]) - 1);
             }
             cancelSomeTickets(orderID, indexArr);
+            if(!hasValidTicket(orderID)) {
+                updateOrderStatus(orderID, "已取消");
+            }
+        }
+    }
+
+    @Override
+    public void userRegister(String username, String id, String phone_number, String account, String password) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "insert into users (user_name, id_card_num, phone_number, account, password) values (''||?||'', ''||?||'', ''||?||'', ''||?||'', ''||?||'');";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, id);
+            preparedStatement.setString(3, phone_number);
+            preparedStatement.setString(4, account);
+            preparedStatement.setString(5, password);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public boolean checkExistingAccount(String account) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select count(*) from users where account = ''||?||'';";
+        int number = 0;
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, account);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                number = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return number == 0;
+    }
+
+    @Override
+    public String getPassword(String account) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sql = "select password from users where account = ''||?||'';";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, account);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getUserID(String account) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sql = "select user_id from users where account = ''||?||'';";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, account);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("user_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getUserInformation(int user_id) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sql = "select * from users where user_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, user_id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append("1.用户名: ").append(resultSet.getString("user_name")).append("\n");
+                sb.append("2.身份证号: ").append(resultSet.getString("id_card_num")).append("\n");
+                sb.append("3.手机号: ").append(resultSet.getString("phone_number")).append("\n");
+                sb.append("4.账号: ").append(resultSet.getString("account")).append("\n");
+                sb.append("5.密码: ").append(resultSet.getString("password")).append("\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void updateUserInfo(int user_id, String column, String info) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "update users set " + column + " = ''||?||'' where user_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, info);
+            preparedStatement.setInt(2, user_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
         }
     }
 
@@ -489,7 +668,8 @@ public class DatabaseOperation implements BasicOperation {
         Connection con = cp.getConnection();
         ResultSet resultSet;
         ArrayList<Integer> orderIDArr = new ArrayList<>();
-        String sql = "select sub1.order_id                                                       as order_id,\n" +
+        String sql = "select row_number() over (order by sub1.create_datetime)                   as id,\n" +
+                "       sub1.order_id                                                       as order_id,\n" +
                 "       sub1.create_datetime                                                as create_time,\n" +
                 "       sub1.order_status                                                   as order_status,\n" +
                 "       (select c.city_name from city c where sub1.depart_city = c.city_id) as depart_city,\n" +
@@ -583,6 +763,26 @@ public class DatabaseOperation implements BasicOperation {
             cp.releaseConnection(con);
         }
         return ticketTypeID;
+    }
+
+    private boolean hasValidTicket(int orderID) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int number = 0;
+        String sql = "select count(*) from order_user_ticket where order_id = ? and status != '已取消';";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, orderID);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                number = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return number != 0;
     }
 
     private int createOneOrder(int userID, int fromCity, int toCity) throws SQLException {
