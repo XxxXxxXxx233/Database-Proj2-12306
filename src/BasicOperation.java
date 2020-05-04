@@ -15,7 +15,8 @@ public interface BasicOperation {
 
     void userRegister(String username, String id, String phone_number, String account, String password) throws SQLException;
     boolean checkExistingAccount(String account) throws SQLException;
-    String getPassword(String account) throws SQLException;
+    String getPasswordByAccount(String account) throws SQLException;
+    String getPasswordByUserID(int userID) throws SQLException;
     String getUserID(String account) throws SQLException;
     String getUserInformation(int user_id) throws SQLException;
     void updateUserInfo(int user_id, String column, String info) throws SQLException;

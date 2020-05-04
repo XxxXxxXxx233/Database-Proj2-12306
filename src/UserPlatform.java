@@ -43,7 +43,7 @@ public class UserPlatform implements DataModification {
             System.out.print("此账号不存在，请重新输入: ");
             account = in.next();
         }
-        String password = d.getPassword(account);
+        String password = d.getPasswordByAccount(account);
         System.out.print("请输入密码: ");
         String userEnter = in.next();
         while(!userEnter.equals(password)) {
@@ -65,6 +65,19 @@ public class UserPlatform implements DataModification {
         if(this.currentUser == -1)
             System.out.println("还未登录");
         else {
+            System.out.print("请再次输入密码: ");
+            String password = d.getPasswordByUserID(this.currentUser);
+            String userEnter = in.next();
+            int count = 0;
+            while(!userEnter.equals(password)) {
+                if(count == 5) {
+                    System.out.println("错误次数过多");
+                    return;
+                }
+                System.out.print("密码错误，请重新输入 (还有" + (5-count) + "次机会): ");
+                userEnter = in.next();
+                count++;
+            }
             System.out.println("当前用户信息为: ");
             System.out.println(d.getUserInformation(this.currentUser));
             String[] column = {"用户名", "身份证号", "手机号", "账号", "密码"};

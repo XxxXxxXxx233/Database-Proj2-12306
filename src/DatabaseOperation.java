@@ -535,7 +535,9 @@ public class DatabaseOperation implements BasicOperation {
                 indexArr.add(Integer.parseInt(index[i]) - 1);
             }
             cancelSomeTickets(orderID, indexArr);
+            System.out.println("退票成功");
             if(!hasValidTicket(orderID)) {
+                System.out.println("该订单下所有车票均已取消");
                 updateOrderStatus(orderID, "已取消");
             }
         }
@@ -582,7 +584,7 @@ public class DatabaseOperation implements BasicOperation {
     }
 
     @Override
-    public String getPassword(String account) throws SQLException {
+    public String getPasswordByAccount(String account) throws SQLException {
         Connection con = cp.getConnection();
         ResultSet resultSet;
         StringBuilder sb = new StringBuilder();
@@ -590,6 +592,27 @@ public class DatabaseOperation implements BasicOperation {
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, account);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getPasswordByUserID(int userID) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sql = "select password from users where user_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, userID);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 sb.append(resultSet.getString("password"));
