@@ -546,7 +546,7 @@ public class DatabaseOperation implements BasicOperation {
     @Override
     public void userRegister(String username, String id, String phone_number, String account, String password) throws SQLException {
         Connection con = cp.getConnection();
-        String sql = "insert into users (user_name, id_card_num, phone_number, account, password) values (''||?||'', ''||?||'', ''||?||'', ''||?||'', ''||?||'');";
+        String sql = "insert into users (user_name, id_card_num, phone_number, account, password, administrator) values (''||?||'', ''||?||'', ''||?||'', ''||?||'', ''||?||'', ''||?||'');";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, username);
@@ -554,6 +554,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(3, phone_number);
             preparedStatement.setString(4, account);
             preparedStatement.setString(5, password);
+            preparedStatement.setString(6, "N");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -685,6 +686,379 @@ public class DatabaseOperation implements BasicOperation {
         } finally {
             cp.releaseConnection(con);
         }
+    }
+
+    @Override
+    public String insertTrainBasicInfo(String[] basicInfo) throws SQLException {
+        Connection con = cp.getConnection();
+        String train_code = basicInfo[0];
+        String train_type = basicInfo[1];
+        String start_station = basicInfo[2];
+        String end_station = basicInfo[3];
+        String total_time = basicInfo[4];
+        String total_mile = basicInfo[5];
+        String sql = "insert into train (train_id, train_code, train_type, start_station, end_station, total_time, total_mile)\n" +
+                "values ((select count(*) from train) + 1, ''||?||'', ''||?||'', ?, ?, ''||?||'', ''||?||'');";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, train_code);
+            preparedStatement.setString(2, train_type);
+            preparedStatement.setInt(3, getStationIDByName(start_station));
+            preparedStatement.setInt(4, getStationIDByName(end_station));
+            preparedStatement.setString(5, total_time);
+            preparedStatement.setString(6, total_mile);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return searchTrainBasicInformation(train_code);
+    }
+
+    @Override
+    public String insertTrainDetailInfo(String train_code, String[][] detailInfo) throws SQLException {
+        Connection con = cp.getConnection();
+        int train_id = getTrainIDByCode(train_code);
+        String sql = "insert into train_and_station (train_id, station_id, passing_order, arrival_time, departure_time, total_time, miles,\n" +
+                "                               former_station, latter_station)\n" +
+                "values (?, ?, ?, ''||?||'', ''||?||'', ''||?||'', ''||?||'', ?, ?);";
+        try {
+            for(int i=0; i<detailInfo.length; i++) {
+                int passing_order = Integer.parseInt(detailInfo[i][0]);
+                String station_name = detailInfo[i][1];
+                String arrival_time = detailInfo[i][2];
+                String departure_time = detailInfo[i][3];
+                String total_time = detailInfo[i][4];
+                String total_mile = detailInfo[i][5];
+                String former = detailInfo[i][6].equals("-") ? null : detailInfo[i][6];
+                int former_id = getStationIDByName(former);
+                String latter = detailInfo[i][7].equals("-") ? null : detailInfo[i][7];
+                int latter_id = getStationIDByName(latter);
+                PreparedStatement preparedStatement = con.prepareStatement(sql);
+                preparedStatement.setInt(1, train_id);
+                preparedStatement.setInt(2, getStationIDByName(station_name));
+                preparedStatement.setInt(3, passing_order);
+                preparedStatement.setString(4, arrival_time);
+                preparedStatement.setString(5, departure_time);
+                preparedStatement.setString(6, total_time);
+                preparedStatement.setString(7, total_mile);
+                if(former_id != 0)
+                    preparedStatement.setInt(8, getStationIDByName(former));
+                else
+                    preparedStatement.setNull(8, Types.INTEGER);
+                if(latter_id != 0)
+                    preparedStatement.setInt(9, getStationIDByName(latter));
+                else
+                    preparedStatement.setNull(9, Types.INTEGER);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        insertTicketType(train_id, detailInfo);
+        return searchTrainDetailInformation(train_code);
+    }
+
+    private void insertTicketType(int train_id, String[][] detailInfo) throws SQLException {
+        ArrayList<ticketType> arr = new ArrayList<>();
+        for(int i=0; i<detailInfo.length; i++) {
+            String depart_station = detailInfo[i][1];
+            int beginDistance = Integer.parseInt(detailInfo[i][5]);
+            for(int j=i+1; j<detailInfo.length; j++) {
+                String arrive_station = detailInfo[j][1];
+                int endDistance = Integer.parseInt(detailInfo[j][5]);
+                ticketType temp = new ticketType();
+                temp.train_id = train_id;
+                temp.depart_station = getStationIDByName(depart_station);
+                temp.arrive_station = getStationIDByName(arrive_station);
+                temp.price = 0.46 * (endDistance - beginDistance);
+                arr.add(temp);
+            }
+        }
+        Connection con = cp.getConnection();
+        String sql = "insert into ticket_type (ticket_type_id, train_id, dates, seat_type, depart_station, arrive_station, rest_num, price)\n" +
+                "values (?, ?, ?, ''||?||'', ?, ?, ?, ?);";
+        ArrayList<ticket> tarr = new ArrayList<>();
+        try {
+            String[] seatType = {"business_class", "first_class", "second_class"};
+            int[] restNum = {50, 100, 500};
+            double[] multi = {3, 1.5, 1};
+            for(int i=0; i<arr.size(); i++) {
+                ticketType temp = arr.get(i);
+                for(int j=0; j<3; j++) {
+                    ticket t = new ticket();
+                    int ticketTypeCount = getCountOfTicketType();
+                    t.ticketType = ticketTypeCount;
+                    t.seat_type = seatType[j];
+                    tarr.add(t);
+                    PreparedStatement preparedStatement = con.prepareStatement(sql);
+                    preparedStatement.setInt(1, ticketTypeCount);
+                    preparedStatement.setInt(2, temp.train_id);
+                    preparedStatement.setDate(3, Date.valueOf("2020-01-01"));
+                    preparedStatement.setString(4, seatType[j]);
+                    preparedStatement.setInt(5, temp.depart_station);
+                    preparedStatement.setInt(6, temp.arrive_station);
+                    preparedStatement.setInt(7, restNum[j]);
+                    preparedStatement.setDouble(8, temp.price * multi[j]);
+                    preparedStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        insertTicket(tarr);
+    }
+
+    private void insertTicket(ArrayList<ticket> tarr) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "insert into ticket (ticket_type, carriage_position, seat_position, available)\n" +
+                "values (?, ?, ''||?||'', ''||?||'');";
+        String[] business = {"A", "C", "F"};
+        String[] first = {"A", "C", "D", "F"};
+        String[] second = {"A", "B", "C", "D", "F"};
+        try {
+            for(int j=0; j<tarr.size(); j++) {
+                ticket t = tarr.get(j);
+                if(t.seat_type.equals("business_class")) {
+                    int row = 0;
+                    for(int i=0; i<50; i++) {
+                        if(i%3 == 0) {
+                            row++;
+                        }
+                        PreparedStatement preparedStatement = con.prepareStatement(sql);
+                        preparedStatement.setInt(1, t.ticketType);
+                        preparedStatement.setInt(2, 1);
+                        preparedStatement.setString(3, row + business[i%3]);
+                        preparedStatement.setString(4, "Y");
+                        preparedStatement.executeUpdate();
+                    }
+                } else if(t.seat_type.equals("first_class")) {
+                    int row = 0;
+                    for(int i=0; i<100; i++) {
+                        if(i%4 == 0) {
+                            row++;
+                        }
+                        PreparedStatement preparedStatement = con.prepareStatement(sql);
+                        preparedStatement.setInt(1, t.ticketType);
+                        preparedStatement.setInt(2, 2);
+                        preparedStatement.setString(3, row + first[i%4]);
+                        preparedStatement.setString(4, "Y");
+                        preparedStatement.executeUpdate();
+                    }
+                } else {
+                    for(int k=0; k<4; k++){
+                        int row = 0;
+                        for(int i=0; i<50; i++) {
+                            if(i%5 == 0) {
+                                row++;
+                            }
+                            PreparedStatement preparedStatement = con.prepareStatement(sql);
+                            preparedStatement.setInt(1, t.ticketType);
+                            preparedStatement.setInt(2, 3+k);
+                            preparedStatement.setString(3, row + second[i%5]);
+                            preparedStatement.setString(4, "Y");
+                            preparedStatement.executeUpdate();
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    private int getCountOfTicketType() throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int count = 0;
+        String sql = "select count(*) + 1 as count from ticket_type;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                count = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return count;
+    }
+
+    @Override
+    public int getStationIDByName(String stationName) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int id = 0;
+        String sql = "select station_id from station where station_name = ''||?||'';";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, stationName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                id = Integer.parseInt(resultSet.getString("station_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return id;
+    }
+
+    @Override
+    public String getStationInformation(int stationID) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        StringBuilder sb = new StringBuilder();
+        String sql = "select sub1.station_name,\n" +
+                "       (select c.city_name from city c where c.city_id = sub1.city_id) as city_name\n" +
+                "from (\n" +
+                "         select *\n" +
+                "         from station\n" +
+                "         where station_id = ?) sub1;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, stationID);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append("1.站名: ").append(resultSet.getString("station_name")).append("\n");
+                sb.append("2.所在城市: ").append(resultSet.getString("city_name")).append("\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void updateStationInfo(int stationID, String column, String info) throws SQLException {
+        Connection con = cp.getConnection();
+        try {
+            if(column.equals("station_name")) {
+                String sql = "update station set " + column + " = ''||?||'' where station_id = ?;";
+                PreparedStatement preparedStatement = con.prepareStatement(sql);
+                preparedStatement.setString(1, info);
+                preparedStatement.setInt(2, stationID);
+                preparedStatement.executeUpdate();
+            } else {
+                String sql = "update station set " + column + " = ? where station_id = ?;";
+                PreparedStatement preparedStatement = con.prepareStatement(sql);
+                preparedStatement.setInt(1, getCityIDByName(info));
+                preparedStatement.setInt(2, stationID);
+                preparedStatement.executeUpdate();
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public String createNewStation(String stationName, String cityName) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "insert into station (station_id, station_name, city_id)\n" +
+                "values ((select count(*) from station) + 1, ''||?||'', (select city_id from city where city_name = ''||?||''));";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, stationName);
+            preparedStatement.setString(2, cityName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return getStationInformation(getStationIDByName(stationName));
+    }
+
+    @Override
+    public void updateTrainBasicInfo(String train_code, String column, String info) throws SQLException {
+        Connection con = cp.getConnection();
+        int train_id = getTrainIDByCode(train_code);
+        String sql = "update train set " + column +" = ''||?||'' where train_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, info);
+            preparedStatement.setInt(2, train_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public void updateTrainDetailInfo(String train_code, String stationName, String column, String info) throws SQLException {
+        Connection con = cp.getConnection();
+        int train_id = getTrainIDByCode(train_code);
+        int station_id = getStationIDByName(stationName);
+        String sql = "update train_and_station set " + column +" = ''||?||'' where train_id = ? and station_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, info);
+            preparedStatement.setInt(2, train_id);
+            preparedStatement.setInt(3, station_id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public boolean isAdministrator(int user_id) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select administrator from users where user_id = ?;";
+        String role = "";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, user_id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getString("administrator");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return role.equals("Y");
+    }
+
+    private int getCityIDByName(String cityName) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int id = 0;
+        String sql = "select city_id from city where city_name = ''||?||'';";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, cityName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                id = Integer.parseInt(resultSet.getString("city_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return id;
     }
 
     private ArrayList<Integer> getOrderInformation(int userID) throws SQLException {
@@ -1144,6 +1518,26 @@ public class DatabaseOperation implements BasicOperation {
         return ticketID;
     }
 
+    private int getTrainIDByCode(String train_code) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int id = 0;
+        String sql = "select train_id from train where train_code = ''||?||''";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, train_code);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                id = Integer.parseInt(resultSet.getString("train_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return id;
+    }
+
     //Just a model to create a function faster
  /*   private String template() throws SQLException {
         Connection con = cp.getConnection();
@@ -1175,4 +1569,18 @@ class passengerInfo {
         this.name = name;
         this.ID = id;
     }
+}
+
+class ticketType {
+    int train_id;
+    String seat_type;
+    int depart_station;
+    int arrive_station;
+    int rest_num;
+    double price;
+}
+
+class ticket {
+    int ticketType;
+    String seat_type;
 }

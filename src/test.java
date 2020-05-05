@@ -9,7 +9,7 @@ public class test {
         System.out.println("1 -> 注册新用户");
         System.out.println("2 -> 登录");
         System.out.print("请输入: ");
-        if(in.nextInt() == 1) {
+        if(Integer.parseInt(in.nextLine()) == 1) {
             up.userRegister();
         } else {
             up.userLogIn();
@@ -24,8 +24,12 @@ public class test {
         System.out.println("6 -> 订票");
         System.out.println("7 -> 查询订单与票");
         System.out.println("8 -> 退票");
-        System.out.println("9 -> 修改资料");
-        System.out.println("10 -> 注销登录");
+        System.out.println("9 -> 插入新列车");
+        System.out.println("10 -> 修改现有列车信息");
+        System.out.println("11 -> 插入新站点");
+        System.out.println("12 -> 修改现有站点信息");
+        System.out.println("13 -> 修改用户资料");
+        System.out.println("14 -> 注销登录");
         int num = 0;
         while (num != -1) {
             int user = up.getCurrentUser();
@@ -34,7 +38,7 @@ public class test {
                 System.out.println("1 -> 注册新用户");
                 System.out.println("2 -> 登录");
                 System.out.print("请输入: ");
-                int check = in.nextInt();
+                int check = Integer.parseInt(in.nextLine());
                 if(check == -1) {
                     break;
                 } else if(check == 1) {
@@ -42,43 +46,44 @@ public class test {
                 } else {
                     up.userLogIn();
                 }
+                user = up.getCurrentUser();
             }
             System.out.print("请输入想进行的操作: ");
-            num = in.nextInt();
+            num = Integer.parseInt(in.nextLine());
             switch (num) {
                 case 1:
                     System.out.print("请输入省份: ");
-                    String province = in.next();
+                    String province = in.nextLine();
                     System.out.println(d.searchStationInProvince(province));
                     break;
                 case 2:
                     System.out.print("请输入城市: ");
-                    String city = in.next();
+                    String city = in.nextLine();
                     System.out.println(d.searchStationInCity(city));
                     break;
                 case 3:
                     System.out.print("请输入站名: ");
-                    String stationName = in.next();
+                    String stationName = in.nextLine();
                     System.out.println(d.searchTrainInformationInOneStation(stationName));
                     break;
                 case 4:
                     System.out.print("请输入出发站: ");
-                    String from = in.next();
+                    String from = in.nextLine();
                     System.out.print("请输入到达站: ");
-                    String to = in.next();
+                    String to = in.nextLine();
                     System.out.println(d.searchTrainFromOneStationToAnother(from, to));
                     break;
                 case 5:
                     System.out.print("请输入车次: ");
-                    String train_code = in.next();
+                    String train_code = in.nextLine();
                     System.out.println(d.searchTrainBasicInformation(train_code));
                     System.out.println(d.searchTrainDetailInformation(train_code));
                     break;
                 case 6:
                     System.out.print("请输入出发站: ");
-                    String fromStation = in.next();
+                    String fromStation = in.nextLine();
                     System.out.print("请输入到达站: ");
-                    String toStation = in.next();
+                    String toStation = in.nextLine();
                     d.buySomeTickets(user, fromStation, toStation);
                     break;
                 case 7:
@@ -88,9 +93,21 @@ public class test {
                     d.returnSomeTickets(user);
                     break;
                 case 9:
-                    up.userUpdate();
+                    up.trainInsert();
                     break;
                 case 10:
+                    up.trainUpdate();
+                    break;
+                case 11:
+                    up.stationInsert();
+                    break;
+                case 12:
+                    up.stationUpdate();
+                    break;
+                case 13:
+                    up.userUpdate();
+                    break;
+                case 14:
                     up.userLogOut();
                     break;
             }

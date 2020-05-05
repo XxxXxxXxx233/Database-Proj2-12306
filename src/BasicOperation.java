@@ -1,6 +1,7 @@
 import java.sql.SQLException;
 
 public interface BasicOperation {
+
     String searchStationInProvince(String provinceName) throws SQLException;
     String searchStationInCity(String cityName) throws SQLException;
     String searchTrainBasicInformation(String trainCode) throws SQLException;
@@ -18,6 +19,21 @@ public interface BasicOperation {
     String getPasswordByAccount(String account) throws SQLException;
     String getPasswordByUserID(int userID) throws SQLException;
     String getUserID(String account) throws SQLException;
+
     String getUserInformation(int user_id) throws SQLException;
     void updateUserInfo(int user_id, String column, String info) throws SQLException;
+
+    String insertTrainBasicInfo(String[] basicInfo) throws SQLException;
+    String insertTrainDetailInfo(String train_code, String[][] detailInfo) throws SQLException;
+
+    int getStationIDByName(String stationName) throws SQLException;
+    String getStationInformation(int stationID) throws SQLException;
+    void updateStationInfo(int stationID, String column, String info) throws SQLException;
+    String createNewStation(String stationName, String cityName) throws SQLException;
+
+    void updateTrainBasicInfo(String train_code, String column, String info) throws SQLException;
+    void updateTrainDetailInfo(String train_code, String stationName, String column, String info) throws SQLException;
+
+    boolean isAdministrator(int user_id) throws SQLException;
+
 }
