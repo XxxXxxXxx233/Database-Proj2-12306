@@ -80,11 +80,20 @@ public class test {
                     System.out.println(d.searchTrainDetailInformation(train_code));
                     break;
                 case 6:
-                    System.out.print("请输入出发站: ");
-                    String fromStation = in.nextLine();
-                    System.out.print("请输入到达站: ");
-                    String toStation = in.nextLine();
-                    d.buySomeTickets(user, fromStation, toStation);
+                    System.out.println("按站买票(1) / 按城市买票(2) ?");
+                    if(Integer.parseInt(in.nextLine()) == 1) {
+                        System.out.print("请输入出发站: ");
+                        String fromStation = in.nextLine();
+                        System.out.print("请输入到达站: ");
+                        String toStation = in.nextLine();
+                        d.buySomeTicketsByStation(user, fromStation, toStation);
+                    } else {
+                        System.out.print("请输入出发城市: ");
+                        String fromCity = in.nextLine();
+                        System.out.print("请输入到达城市: ");
+                        String toCity = in.nextLine();
+                        d.buySomeTicketsByCity(user, fromCity, toCity);
+                    }
                     break;
                 case 7:
                     d.searchOrderAndTicket(user);

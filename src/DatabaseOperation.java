@@ -266,6 +266,81 @@ public class DatabaseOperation implements BasicOperation {
     }
 
     @Override
+    public String searchTicketFromOneCityToAnother(String fromCity, String toCity) throws SQLException {
+        System.out.println("---------- 从" + fromCity + "到" + toCity + "站有如下车票可选: ----------");
+        System.out.println("票序号\t车次\t类型\t出发站\t出发时间\t到达站\t到达时间\t座位类型\t余量\t票价");
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        Map<String, String> seatTypeMap = new HashMap<>();
+        seatTypeMap.put("second_class", "二等座");
+        seatTypeMap.put("first_class", "一等座");
+        seatTypeMap.put("business_class", "商务座");
+        StringBuilder sb = new StringBuilder();
+        String sqlBasicInfo = "select rank() over (order by sub2.price, arrival_time, train_code), sub2.*\n" +
+                "from (\n" +
+                "         select t.train_code                                                                       as train_code,\n" +
+                "                t.train_type                                                                       as train_type,\n" +
+                "                (select s1.station_name from station s1 where s1.station_id = sub1.depart_station) as depart_station,\n" +
+                "                (select tas.departure_time\n" +
+                "                 from train_and_station tas\n" +
+                "                 where tas.train_id = sub1.train_id\n" +
+                "                   and tas.station_id = sub1.depart_station)                                       as depart_time,\n" +
+                "                (select s2.station_name from station s2 where s2.station_id = sub1.arrive_station) as arrival_station,\n" +
+                "                (select tas.arrival_time\n" +
+                "                 from train_and_station tas\n" +
+                "                 where tas.train_id = sub1.train_id\n" +
+                "                   and tas.station_id = sub1.arrive_station)                                       as arrival_time,\n" +
+                "                sub1.seat_type                                                                     as seat_type,\n" +
+                "                sub1.rest_num                                                                      as rest_num,\n" +
+                "                sub1.price                                                                         as price\n" +
+                "         from (\n" +
+                "                  select tt.ticket_type_id as ticket_type_id,\n" +
+                "                         tt.train_id       as train_id,\n" +
+                "                         tt.depart_station as depart_station,\n" +
+                "                         tt.arrive_station as arrive_station,\n" +
+                "                         tt.seat_type      as seat_type,\n" +
+                "                         tt.rest_num       as rest_num,\n" +
+                "                         tt.price          as price\n" +
+                "                  from ticket_type tt\n" +
+                "                  where tt.depart_station in (select s1.station_id as from_id\n" +
+                "                                             from station s1\n" +
+                "                                             where s1.station_name in (select station_name\n" +
+                "                                                                       from station\n" +
+                "                                                                       where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
+                "                    and tt.arrive_station in (select s2.station_id as to_id\n" +
+                "                                             from station s2\n" +
+                "                                             where s2.station_name in (select station_name\n" +
+                "                                                                      from station\n" +
+                "                                                                      where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
+                "                    and tt.price != 0) sub1\n" +
+                "                  join train t on t.train_id = sub1.train_id) sub2;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
+            preparedStatement.setString(1, fromCity);
+            preparedStatement.setString(2, toCity);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("rank")).append("\t");
+                sb.append(resultSet.getString("train_code")).append("\t");
+                sb.append(resultSet.getString("train_type")).append("\t");
+                sb.append(resultSet.getString("depart_station")).append("\t");
+                sb.append(resultSet.getString("depart_time")).append("\t");
+                sb.append(resultSet.getString("arrival_station")).append("\t");
+                sb.append(resultSet.getString("arrival_time")).append("\t");
+                sb.append(seatTypeMap.get(resultSet.getString("seat_type"))).append("\t");
+                sb.append(resultSet.getString("rest_num")).append("\t");
+                sb.append(resultSet.getString("price")).append("\t");
+                sb.append(System.lineSeparator());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return sb.toString();
+    }
+
+    @Override
     public String searchTicketFromOneStationToAnother(String fromStation, String toStation) throws SQLException {
         System.out.println("---------- 从" + fromStation + "站到" + toStation + "站有如下车票可选: ----------");
         System.out.println("票序号\t车次\t类型\t出发站\t出发时间\t到达站\t到达时间\t座位类型\t余量\t票价");
@@ -485,7 +560,7 @@ public class DatabaseOperation implements BasicOperation {
     }
 
     @Override
-    public void buySomeTickets(int userID, String fromStation, String toStation) throws SQLException {
+    public void buySomeTicketsByStation(int userID, String fromStation, String toStation) throws SQLException {
         int fromCity = getCityIDByStation(fromStation);
         int toCIty = getCityIDByStation(toStation);
 
@@ -495,6 +570,37 @@ public class DatabaseOperation implements BasicOperation {
         System.out.print("请输入您想购买的票的序号: ");
         int ticketType = ticketTypeArr.get(in.nextInt() - 1);
         int orderID = createOneOrder(userID, fromCity, toCIty);
+
+        System.out.print("请输入您想购买的张数: ");
+        int number = in.nextInt();
+
+        System.out.println("请输入乘客信息（姓名/身份证号）: ");
+        ArrayList<passengerInfo> passengerInfoArr = new ArrayList<>();
+        for(int i=0; i<number; i++) {
+            passengerInfoArr.add(new passengerInfo(in.next(), in.next()));
+        }
+        in.nextLine();
+        ArrayList<Integer> ticketIDArr = generateSeatPosition(ticketType, number);
+        System.out.println(getSeatPosition(passengerInfoArr, ticketIDArr));
+        insertOrderInformation(orderID, ticketIDArr, passengerInfoArr);
+        if(updateTicketRestNum(ticketType, number) != -1) {
+            System.out.println("买票成功");
+        } else {
+            System.out.println("买票失败");
+        }
+    }
+
+    @Override
+    public void buySomeTicketsByCity(int userID, String fromCity, String toCity) throws SQLException {
+        int fromCityID = getCityIDByName(fromCity);
+        int toCItyID = getCityIDByStation(toCity);
+
+        System.out.println(searchTicketFromOneCityToAnother(fromCity, toCity));
+        ArrayList<Integer> ticketTypeArr = getTicketFromOneCityToAnother(fromCity, toCity);
+
+        System.out.print("请输入您想购买的票的序号: ");
+        int ticketType = ticketTypeArr.get(in.nextInt() - 1);
+        int orderID = createOneOrder(userID, fromCityID, toCItyID);
 
         System.out.print("请输入您想购买的张数: ");
         int number = in.nextInt();
@@ -1356,6 +1462,65 @@ public class DatabaseOperation implements BasicOperation {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
             preparedStatement.setString(1, fromStation);
             preparedStatement.setString(2, toStation);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                arr.add(Integer.parseInt(resultSet.getString("ticket_type_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return arr;
+    }
+
+    private ArrayList<Integer> getTicketFromOneCityToAnother(String fromCity, String toCity) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        ArrayList<Integer> arr = new ArrayList<>();
+        String sqlBasicInfo = "select rank() over (order by sub2.price, arrival_time, train_code), sub2.*\n" +
+                "from (\n" +
+                "         select sub1.ticket_type_id                                                                as ticket_type_id,\n" +
+                "                t.train_code                                                                       as train_code,\n" +
+                "                t.train_type                                                                       as train_type,\n" +
+                "                (select s1.station_name from station s1 where s1.station_id = sub1.depart_station) as depart_station,\n" +
+                "                (select tas.departure_time\n" +
+                "                 from train_and_station tas\n" +
+                "                 where tas.train_id = sub1.train_id\n" +
+                "                   and tas.station_id = sub1.depart_station)                                       as depart_time,\n" +
+                "                (select s2.station_name from station s2 where s2.station_id = sub1.arrive_station) as arrival_station,\n" +
+                "                (select tas.arrival_time\n" +
+                "                 from train_and_station tas\n" +
+                "                 where tas.train_id = sub1.train_id\n" +
+                "                   and tas.station_id = sub1.arrive_station)                                       as arrival_time,\n" +
+                "                sub1.seat_type                                                                     as seat_type,\n" +
+                "                sub1.rest_num                                                                      as rest_num,\n" +
+                "                sub1.price                                                                         as price\n" +
+                "         from (\n" +
+                "                  select tt.ticket_type_id as ticket_type_id,\n" +
+                "                         tt.train_id       as train_id,\n" +
+                "                         tt.depart_station as depart_station,\n" +
+                "                         tt.arrive_station as arrive_station,\n" +
+                "                         tt.seat_type      as seat_type,\n" +
+                "                         tt.rest_num       as rest_num,\n" +
+                "                         tt.price          as price\n" +
+                "                  from ticket_type tt\n" +
+                "                  where tt.depart_station in (select s1.station_id as from_id\n" +
+                "                                              from station s1\n" +
+                "                                              where s1.station_name in (select station_name\n" +
+                "                                                                        from station\n" +
+                "                                                                        where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
+                "                    and tt.arrive_station in (select s2.station_id as to_id\n" +
+                "                                              from station s2\n" +
+                "                                              where s2.station_name in (select station_name\n" +
+                "                                                                        from station\n" +
+                "                                                                        where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
+                "                    and tt.price != 0) sub1\n" +
+                "                  join train t on t.train_id = sub1.train_id) sub2;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
+            preparedStatement.setString(1, fromCity);
+            preparedStatement.setString(2, toCity);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 arr.add(Integer.parseInt(resultSet.getString("ticket_type_id")));

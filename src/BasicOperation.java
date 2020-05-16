@@ -8,10 +8,12 @@ public interface BasicOperation {
     String searchTrainDetailInformation(String trainCode) throws SQLException;
     String searchTrainInformationInOneStation(String stationName) throws SQLException;
     String searchTrainFromOneStationToAnother(String fromStation, String toStation) throws SQLException;
+    String searchTicketFromOneCityToAnother(String fromCity, String toCity) throws SQLException;
     String searchTicketFromOneStationToAnother(String fromStation, String toStation) throws SQLException;
     void searchOrderAndTicket(int userID) throws SQLException;
 
-    void buySomeTickets(int userID, String fromStation, String toStation) throws SQLException;
+    void buySomeTicketsByStation(int userID, String fromStation, String toStation) throws SQLException;
+    void buySomeTicketsByCity(int userID, String fromCity, String toCity) throws SQLException;
     void returnSomeTickets(int userID) throws SQLException;
 
     void userRegister(String username, String id, String phone_number, String account, String password) throws SQLException;
