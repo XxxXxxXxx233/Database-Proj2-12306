@@ -32,93 +32,98 @@ public class test {
         System.out.println("14 -> 注销登录");
         int num = 0;
         while (num != -1) {
-            int user = up.getCurrentUser();
-            if(user == -1) {
-                System.out.println("-1 -> 退出");
-                System.out.println("1 -> 注册新用户");
-                System.out.println("2 -> 登录");
-                System.out.print("请输入: ");
-                int check = Integer.parseInt(in.nextLine());
-                if(check == -1) {
-                    break;
-                } else if(check == 1) {
-                    up.userRegister();
-                } else {
-                    up.userLogIn();
-                }
-                user = up.getCurrentUser();
-            }
-            System.out.print("请输入想进行的操作: ");
-            num = Integer.parseInt(in.nextLine());
-            switch (num) {
-                case 1:
-                    System.out.print("请输入省份: ");
-                    String province = in.nextLine();
-                    System.out.println(d.searchStationInProvince(province));
-                    break;
-                case 2:
-                    System.out.print("请输入城市: ");
-                    String city = in.nextLine();
-                    System.out.println(d.searchStationInCity(city));
-                    break;
-                case 3:
-                    System.out.print("请输入站名: ");
-                    String stationName = in.nextLine();
-                    System.out.println(d.searchTrainInformationInOneStation(stationName));
-                    break;
-                case 4:
-                    System.out.print("请输入出发站: ");
-                    String from = in.nextLine();
-                    System.out.print("请输入到达站: ");
-                    String to = in.nextLine();
-                    System.out.println(d.searchTrainFromOneStationToAnother(from, to));
-                    break;
-                case 5:
-                    System.out.print("请输入车次: ");
-                    String train_code = in.nextLine();
-                    System.out.println(d.searchTrainBasicInformation(train_code));
-                    System.out.println(d.searchTrainDetailInformation(train_code));
-                    break;
-                case 6:
-                    System.out.println("按站买票(1) / 按城市买票(2) ?");
-                    if(Integer.parseInt(in.nextLine()) == 1) {
-                        System.out.print("请输入出发站: ");
-                        String fromStation = in.nextLine();
-                        System.out.print("请输入到达站: ");
-                        String toStation = in.nextLine();
-                        d.buySomeTicketsByStation(user, fromStation, toStation);
+            try {
+                int user = up.getCurrentUser();
+                if(user == -1) {
+                    System.out.println("-1 -> 退出");
+                    System.out.println("1 -> 注册新用户");
+                    System.out.println("2 -> 登录");
+                    System.out.print("请输入: ");
+                    int check = Integer.parseInt(in.nextLine());
+                    if(check == -1) {
+                        break;
+                    } else if(check == 1) {
+                        up.userRegister();
                     } else {
-                        System.out.print("请输入出发城市: ");
-                        String fromCity = in.nextLine();
-                        System.out.print("请输入到达城市: ");
-                        String toCity = in.nextLine();
-                        d.buySomeTicketsByCity(user, fromCity, toCity);
+                        up.userLogIn();
                     }
-                    break;
-                case 7:
-                    d.searchOrderAndTicket(user);
-                    break;
-                case 8:
-                    d.returnSomeTickets(user);
-                    break;
-                case 9:
-                    up.trainInsert();
-                    break;
-                case 10:
-                    up.trainUpdate();
-                    break;
-                case 11:
-                    up.stationInsert();
-                    break;
-                case 12:
-                    up.stationUpdate();
-                    break;
-                case 13:
-                    up.userUpdate();
-                    break;
-                case 14:
-                    up.userLogOut();
-                    break;
+                    user = up.getCurrentUser();
+                }
+                System.out.print("请输入想进行的操作: ");
+                num = Integer.parseInt(in.nextLine());
+                switch (num) {
+                    case 1:
+                        System.out.print("请输入省份: ");
+                        String province = in.nextLine();
+                        System.out.println(d.searchStationInProvince(province));
+                        break;
+                    case 2:
+                        System.out.print("请输入城市: ");
+                        String city = in.nextLine();
+                        System.out.println(d.searchStationInCity(city));
+                        break;
+                    case 3:
+                        System.out.print("请输入站名: ");
+                        String stationName = in.nextLine();
+                        System.out.println(d.searchTrainInformationInOneStation(stationName));
+                        break;
+                    case 4:
+                        System.out.print("请输入出发站: ");
+                        String from = in.nextLine();
+                        System.out.print("请输入到达站: ");
+                        String to = in.nextLine();
+                        System.out.println(d.searchTrainFromOneStationToAnother(from, to));
+                        break;
+                    case 5:
+                        System.out.print("请输入车次: ");
+                        String train_code = in.nextLine();
+                        System.out.println(d.searchTrainBasicInformation(train_code));
+                        System.out.println(d.searchTrainDetailInformation(train_code));
+                        break;
+                    case 6:
+                        System.out.print("按站买票(1) / 按城市买票(2)? ");
+                        if(Integer.parseInt(in.nextLine()) == 1) {
+                            System.out.print("请输入出发站: ");
+                            String fromStation = in.nextLine();
+                            System.out.print("请输入到达站: ");
+                            String toStation = in.nextLine();
+                            d.buySomeTicketsByStation(user, fromStation, toStation);
+                        } else {
+                            System.out.print("请输入出发城市: ");
+                            String fromCity = in.nextLine();
+                            System.out.print("请输入到达城市: ");
+                            String toCity = in.nextLine();
+                            d.buySomeTicketsByCity(user, fromCity, toCity);
+                        }
+                        break;
+                    case 7:
+                        d.searchOrderAndTicket(user);
+                        break;
+                    case 8:
+                        d.returnSomeTickets(user);
+                        break;
+                    case 9:
+                        up.trainInsert();
+                        break;
+                    case 10:
+                        up.trainUpdate();
+                        break;
+                    case 11:
+                        up.stationInsert();
+                        break;
+                    case 12:
+                        up.stationUpdate();
+                        break;
+                    case 13:
+                        up.userUpdate();
+                        break;
+                    case 14:
+                        up.userLogOut();
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error!");
+                continue;
             }
         }
     }
