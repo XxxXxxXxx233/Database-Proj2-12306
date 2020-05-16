@@ -566,8 +566,14 @@ public class DatabaseOperation implements BasicOperation {
 
         System.out.println(searchTicketFromOneStationToAnother(fromStation, toStation));
         ArrayList<Integer> ticketTypeArr = getTicketFromOneStationToAnother(fromStation, toStation);
-
-        System.out.print("请输入您想购买的票的序号: ");
+        if(ticketTypeArr.size() == 0) {
+            System.out.println("未查询到有效车票");
+            return;
+        }
+        System.out.print("请输入您想购买的票的序号 (-1退出): ");
+        int num = in.nextInt();
+        if(num == -1)
+            return;
         int ticketType = ticketTypeArr.get(in.nextInt() - 1);
         int orderID = createOneOrder(userID, fromCity, toCIty);
 
@@ -597,9 +603,15 @@ public class DatabaseOperation implements BasicOperation {
 
         System.out.println(searchTicketFromOneCityToAnother(fromCity, toCity));
         ArrayList<Integer> ticketTypeArr = getTicketFromOneCityToAnother(fromCity, toCity);
-
-        System.out.print("请输入您想购买的票的序号: ");
-        int ticketType = ticketTypeArr.get(in.nextInt() - 1);
+        if(ticketTypeArr.size() == 0) {
+            System.out.println("未查询到有效车票");
+            return;
+        }
+        System.out.print("请输入您想购买的票的序号 (-1退出): ");
+        int num = in.nextInt();
+        if(num == -1)
+            return;
+        int ticketType = ticketTypeArr.get(num - 1);
         int orderID = createOneOrder(userID, fromCityID, toCItyID);
 
         System.out.print("请输入您想购买的张数: ");
