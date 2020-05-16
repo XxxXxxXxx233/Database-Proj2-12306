@@ -35,7 +35,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -65,7 +65,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -102,7 +102,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -153,7 +153,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -205,7 +205,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -259,7 +259,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -334,7 +334,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -405,7 +405,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -461,7 +461,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -498,7 +498,7 @@ public class DatabaseOperation implements BasicOperation {
                 count++;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -553,7 +553,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("price")).append("\t");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -680,7 +680,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(6, "N");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -700,7 +700,7 @@ public class DatabaseOperation implements BasicOperation {
                 number = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -721,7 +721,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("password"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -742,7 +742,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("password"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -763,7 +763,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("user_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -788,7 +788,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append("5.密码: ").append(resultSet.getString("password")).append("\n");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -805,7 +805,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, user_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -832,7 +832,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(6, total_mile);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -877,7 +877,7 @@ public class DatabaseOperation implements BasicOperation {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -894,7 +894,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(1, train_code);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -915,7 +915,7 @@ public class DatabaseOperation implements BasicOperation {
                 number = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -967,7 +967,7 @@ public class DatabaseOperation implements BasicOperation {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1028,7 +1028,7 @@ public class DatabaseOperation implements BasicOperation {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1046,7 +1046,7 @@ public class DatabaseOperation implements BasicOperation {
                 count = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1067,7 +1067,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("station_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1094,7 +1094,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append("2.所在城市: ").append(resultSet.getString("city_name")).append("\n");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1120,7 +1120,7 @@ public class DatabaseOperation implements BasicOperation {
             }
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1137,7 +1137,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(2, cityName);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1153,7 +1153,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(1, stationName);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1173,7 +1173,7 @@ public class DatabaseOperation implements BasicOperation {
                 number = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1191,7 +1191,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, train_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1210,7 +1210,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(3, station_id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1230,7 +1230,7 @@ public class DatabaseOperation implements BasicOperation {
                 role = resultSet.getString("administrator");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1251,7 +1251,7 @@ public class DatabaseOperation implements BasicOperation {
                 role = resultSet.getString("alive");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1272,7 +1272,7 @@ public class DatabaseOperation implements BasicOperation {
                 role = resultSet.getString("alive");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1292,7 +1292,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("city_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1325,7 +1325,7 @@ public class DatabaseOperation implements BasicOperation {
                 orderIDArr.add(Integer.parseInt(resultSet.getString("order_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1371,7 +1371,7 @@ public class DatabaseOperation implements BasicOperation {
                 ticketIDArr.add(Integer.parseInt(resultSet.getString("ticket_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1393,7 +1393,7 @@ public class DatabaseOperation implements BasicOperation {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1413,7 +1413,7 @@ public class DatabaseOperation implements BasicOperation {
                 number = Integer.parseInt(resultSet.getString("count"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1434,7 +1434,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(5, toCity);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1455,7 +1455,7 @@ public class DatabaseOperation implements BasicOperation {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1475,7 +1475,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("user_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1498,7 +1498,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("order_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1521,7 +1521,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("city_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1540,7 +1540,7 @@ public class DatabaseOperation implements BasicOperation {
                 ts = resultSet.getTimestamp("t");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1595,7 +1595,7 @@ public class DatabaseOperation implements BasicOperation {
                 arr.add(Integer.parseInt(resultSet.getString("ticket_type_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1654,7 +1654,7 @@ public class DatabaseOperation implements BasicOperation {
                 arr.add(Integer.parseInt(resultSet.getString("ticket_type_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1675,7 +1675,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("status"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1702,7 +1702,7 @@ public class DatabaseOperation implements BasicOperation {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1721,7 +1721,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, ticketID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1736,7 +1736,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, orderID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1752,7 +1752,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(3, ticketID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1767,7 +1767,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, orderID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1783,7 +1783,7 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setInt(2, ticketType);
             affectRow = preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1808,7 +1808,7 @@ public class DatabaseOperation implements BasicOperation {
                 ticketID.add(Integer.parseInt(resultSet.getString("ticket_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1828,7 +1828,7 @@ public class DatabaseOperation implements BasicOperation {
                 id = Integer.parseInt(resultSet.getString("train_id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
@@ -1849,7 +1849,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("order_id")).append("\t");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             cp.releaseConnection(con);
         }
