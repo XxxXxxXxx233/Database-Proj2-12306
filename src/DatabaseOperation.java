@@ -16,7 +16,7 @@ public class DatabaseOperation implements BasicOperation {
     @Override
     public String searchStationInProvince(String provinceName) throws SQLException {
         System.out.println("---------- " + provinceName + " 省内的所有车站如下: ----------");
-        System.out.println("站名\t城市");
+        System.out.println("站名\t城市\t省份");
         Connection con = cp.getConnection();
         ResultSet resultSet;
         StringBuilder sb = new StringBuilder();
@@ -31,6 +31,7 @@ public class DatabaseOperation implements BasicOperation {
             while (resultSet.next()) {
                 sb.append(resultSet.getString("station_name")).append("\t");
                 sb.append(resultSet.getString("city_name")).append("\t");
+                sb.append(provinceName).append("\t");
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
@@ -44,11 +45,12 @@ public class DatabaseOperation implements BasicOperation {
     @Override
     public String searchStationInCity(String cityName) throws SQLException {
         System.out.println("---------- " + cityName + " 市的所有车站如下: ----------");
-        System.out.println("站名");
+        System.out.println("站名\t城市\t省份");
         Connection con = cp.getConnection();
         ResultSet resultSet;
         StringBuilder sb = new StringBuilder();
-        String sql = "select s.station_name as station_name\n" +
+        String sql = "select s.station_name  as station_name,\n" +
+                "       c.province_name as province_name\n" +
                 "from station s\n" +
                 "         join city c on s.city_id = c.city_id\n" +
                 "where c.city_name = ''||?||'';";
@@ -57,7 +59,9 @@ public class DatabaseOperation implements BasicOperation {
             preparedStatement.setString(1, cityName);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                sb.append(resultSet.getString("station_name"));
+                sb.append(resultSet.getString("station_name")).append("\t");
+                sb.append(cityName).append("\t");
+                sb.append(resultSet.getString("province_name")).append("\t");
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
