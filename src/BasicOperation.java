@@ -27,15 +27,20 @@ public interface BasicOperation {
 
     String insertTrainBasicInfo(String[] basicInfo) throws SQLException;
     String insertTrainDetailInfo(String train_code, String[][] detailInfo) throws SQLException;
+    void deleteTrain(String train_code) throws SQLException;
 
+    boolean checkExistingStation(String stationName, String cityName)throws SQLException;
     int getStationIDByName(String stationName) throws SQLException;
     String getStationInformation(int stationID) throws SQLException;
     void updateStationInfo(int stationID, String column, String info) throws SQLException;
     String createNewStation(String stationName, String cityName) throws SQLException;
+    void deleteStation(String stationName) throws SQLException;
 
+    boolean checkExistingTrain(String train_code) throws SQLException;
     void updateTrainBasicInfo(String train_code, String column, String info) throws SQLException;
     void updateTrainDetailInfo(String train_code, String stationName, String column, String info) throws SQLException;
 
     boolean isAdministrator(int user_id) throws SQLException;
-
+    boolean isTrainAlive(String train_code) throws SQLException;
+    boolean isStationAlive(String stationName) throws SQLException;
 }

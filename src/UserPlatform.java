@@ -104,6 +104,10 @@ public class UserPlatform implements DataModification {
             System.out.println("请输入新车次基本信息: ");
             in.nextLine();
             String[] basicInfo = in.nextLine().split(" ");
+            if(!d.checkExistingTrain(basicInfo[0])) {
+                System.out.println("该车次已存在");
+                return;
+            }
             System.out.println(d.insertTrainBasicInfo(basicInfo));
             System.out.print("请输入该列车到达的站点数量: ");
             int num = Integer.parseInt(in.nextLine());
@@ -183,14 +187,34 @@ public class UserPlatform implements DataModification {
     }
 
     @Override
+    public void trainDelete() throws SQLException {
+        if(d.isAdministrator(this.currentUser)) {
+            System.out.print("请输入要删除的车次: ");
+            String train_code = in.next();
+            d.deleteTrain(train_code);
+            if(!d.isTrainAlive(train_code)) {
+                System.out.println("删除成功");
+            } else {
+                System.out.println("删除失败");
+            }
+        } else {
+            System.out.println("没有此操作的权限");
+        }
+    }
+
+    @Override
     public void stationInsert() throws SQLException {
         if(d.isAdministrator(this.currentUser)) {
             System.out.print("请输入新站名: ");
             String stationName = in.next();
             System.out.print("请输入所在城市: ");
             String cityName = in.next();
-            System.out.println("新站点信息为: ");
-            System.out.print(d.createNewStation(stationName, cityName));
+            if(d.checkExistingStation(stationName, cityName)) {
+                System.out.println("新站点信息为: ");
+                System.out.print(d.createNewStation(stationName, cityName));
+            } else {
+                System.out.println("该站点已存在");
+            }
         } else {
             System.out.println("没有此操作的权限");
         }
@@ -217,6 +241,22 @@ public class UserPlatform implements DataModification {
                 System.out.println(d.getStationInformation(stationID));
             } else if(num != 0) {
                 System.out.println("非法输入！");
+            }
+        } else {
+            System.out.println("没有此操作的权限");
+        }
+    }
+
+    @Override
+    public void stationDelete() throws SQLException {
+        if(d.isAdministrator(this.currentUser)) {
+            System.out.print("请输入要删除的站名: ");
+            String stationName = in.next();
+            d.deleteStation(stationName);
+            if(!d.isStationAlive(stationName)) {
+                System.out.println("删除成功");
+            } else {
+                System.out.println("删除失败");
             }
         } else {
             System.out.println("没有此操作的权限");

@@ -23,7 +23,7 @@ public class DatabaseOperation implements BasicOperation {
         String sql = "select s.station_name as station_name, c.city_name as city_name\n" +
                 "from station s\n" +
                 "         join city c on s.city_id = c.city_id\n" +
-                "where c.province_name = ''||?||'';";
+                "where c.province_name = ''||?||'' and s.alive = 'Y';";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, provinceName);
@@ -53,7 +53,7 @@ public class DatabaseOperation implements BasicOperation {
                 "       c.province_name as province_name\n" +
                 "from station s\n" +
                 "         join city c on s.city_id = c.city_id\n" +
-                "where c.city_name = ''||?||'';";
+                "where c.city_name = ''||?||'' and s.alive = 'Y';";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setString(1, cityName);
@@ -179,6 +179,7 @@ public class DatabaseOperation implements BasicOperation {
                 "         select *\n" +
                 "         from train_and_station\n" +
                 "         where station_id = (select station_id from station s where station_name = ''||?||'')\n" +
+                "           and (select alive from train where train.train_id = train_and_station.train_id) = 'Y'\n" +
                 "     ) sub1;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlDetailInfo);
@@ -241,7 +242,7 @@ public class DatabaseOperation implements BasicOperation {
                 "           and tt.arrive_station = (select s2.station_id as to_id\n" +
                 "                                    from station s2\n" +
                 "                                    where s2.station_name = ''||?||'')) sub1\n" +
-                "         join train t on t.train_id = sub1.train_id\n" +
+                "         join train t on t.train_id = sub1.train_id and t.alive = 'Y'\n" +
                 "order by depart_time;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
@@ -384,7 +385,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                                             from station s2\n" +
                 "                                             where s2.station_name = ''||?||'')\n" +
                 "                    and tt.price != 0) sub1\n" +
-                "                  join train t on t.train_id = sub1.train_id) sub2;";
+                "                  join train t on t.train_id = sub1.train_id and t.alive = 'Y') sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
             preparedStatement.setString(1, fromStation);
@@ -884,6 +885,43 @@ public class DatabaseOperation implements BasicOperation {
         return searchTrainDetailInformation(train_code);
     }
 
+    @Override
+    public void deleteTrain(String train_code) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "update train set alive = 'N' where train_code = ''||?||''";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, train_code);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public boolean checkExistingStation(String stationName, String cityName) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select count(*) from station where station_name = ''||?||'' and city_id = (select city_id from city where city_name = ''||?||'');";
+        int number = 0;
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, stationName);
+            preparedStatement.setString(2, cityName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                number = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return number == 0;
+    }
+
     private void insertTicketType(int train_id, String[][] detailInfo) throws SQLException {
         ArrayList<ticketType> arr = new ArrayList<>();
         for(int i=0; i<detailInfo.length; i++) {
@@ -1107,6 +1145,42 @@ public class DatabaseOperation implements BasicOperation {
     }
 
     @Override
+    public void deleteStation(String stationName) throws SQLException {
+        Connection con = cp.getConnection();
+        String sql = "update station set alive = 'N' where station_name = ''||?||''";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, stationName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+    }
+
+    @Override
+    public boolean checkExistingTrain(String train_code) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select count(*) from train where train_code = ''||?||'';";
+        int number = 0;
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, train_code);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                number = Integer.parseInt(resultSet.getString("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return number == 0;
+    }
+
+    @Override
     public void updateTrainBasicInfo(String train_code, String column, String info) throws SQLException {
         Connection con = cp.getConnection();
         int train_id = getTrainIDByCode(train_code);
@@ -1154,6 +1228,48 @@ public class DatabaseOperation implements BasicOperation {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 role = resultSet.getString("administrator");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return role.equals("Y");
+    }
+
+    @Override
+    public boolean isTrainAlive(String train_code) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select alive from train where train_code = ''||?||'';";
+        String role = "";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, train_code);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getString("alive");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return role.equals("Y");
+    }
+
+    @Override
+    public boolean isStationAlive(String stationName) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        String sql = "select alive from station where station_name = ''||?||'';";
+        String role = "";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, stationName);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role = resultSet.getString("alive");
             }
         } catch (SQLException e) {
             e.printStackTrace();

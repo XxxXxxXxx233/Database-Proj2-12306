@@ -8,8 +8,10 @@ public interface DataModification {
 
     void trainInsert() throws SQLException;
     void trainUpdate() throws SQLException;
+    void trainDelete() throws SQLException;
 
     void stationInsert() throws SQLException;
     void stationUpdate() throws SQLException;
+    void stationDelete() throws SQLException;
 
 }
