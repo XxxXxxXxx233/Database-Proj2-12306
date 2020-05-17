@@ -602,7 +602,7 @@ public class DatabaseOperation implements BasicOperation {
     @Override
     public void buySomeTicketsByCity(int userID, String fromCity, String toCity) throws SQLException {
         int fromCityID = getCityIDByName(fromCity);
-        int toCItyID = getCityIDByStation(toCity);
+        int toCItyID = getCityIDByName(toCity);
 
         System.out.println(searchTicketFromOneCityToAnother(fromCity, toCity));
         ArrayList<Integer> ticketTypeArr = getTicketFromOneCityToAnother(fromCity, toCity);
@@ -612,36 +612,60 @@ public class DatabaseOperation implements BasicOperation {
             String toCapital = getCapitalOfProvinceByCityName(toCity);
             ticketTypeArr = getTicketFromOneCityToAnother(fromCapital, toCity);
             if(ticketTypeArr.size() == 0) {
-                ticketTypeArr = getTicketFromOneCityToAnother(fromCapital, toCapital);
+                ticketTypeArr = getTicketFromOneCityToAnother(fromCity, toCapital);
                 if(ticketTypeArr.size() == 0) {
-                    System.out.println("未查询到有效车票");
-                    return;
+                    ticketTypeArr = getTicketFromOneCityToAnother(fromCapital, toCapital);
+                    if(ticketTypeArr.size() == 0) {
+                        System.out.println("未查询到有效车票");
+                        return;
+                    } else {
+                        ticketTypeArr = getTicketFromOneCityToAnother(toCapital, toCity);
+                        if(ticketTypeArr.size() == 0) {
+                            System.out.println("未查询到有效车票");
+                            return;
+                        } else {
+                            System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCapital + " -> " + toCity);
+                            System.out.print("是否要购买该条线路的车票（是/否）: ");
+                            String check = in.nextLine();
+                            if(check.equals("是")) {
+                                buySomeTicketsByCity(userID, fromCity, fromCapital);
+                                buySomeTicketsByCity(userID, fromCapital, toCapital);
+                                buySomeTicketsByCity(userID, toCapital, toCity);
+                            }
+                            return;
+                        }
+                    }
                 } else {
                     ticketTypeArr = getTicketFromOneCityToAnother(toCapital, toCity);
                     if(ticketTypeArr.size() == 0) {
                         System.out.println("未查询到有效车票");
                         return;
                     } else {
-                        System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCapital + " -> " + toCity);
+                        System.out.println("查询到有效路线: " + fromCity + " -> " + toCapital + " -> " + toCity);
                         System.out.print("是否要购买该条线路的车票（是/否）: ");
                         String check = in.nextLine();
                         if(check.equals("是")) {
-                            buySomeTicketsByCity(userID, fromCity, fromCapital);
-                            buySomeTicketsByCity(userID, fromCapital, toCapital);
+                            buySomeTicketsByCity(userID, fromCity, toCapital);
                             buySomeTicketsByCity(userID, toCapital, toCity);
                         }
                         return;
                     }
                 }
             } else {
-                System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCity);
-                System.out.print("是否要购买该条线路的车票（是/否）: ");
-                String check = in.nextLine();
-                if(check.equals("是")) {
-                    buySomeTicketsByCity(userID, fromCity, fromCapital);
-                    buySomeTicketsByCity(userID, fromCapital, toCity);
+                ticketTypeArr = getTicketFromOneCityToAnother(fromCity, fromCapital);
+                if(ticketTypeArr.size() == 0) {
+                    System.out.println("未查询到有效车票");
+                    return;
+                } else {
+                    System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCity);
+                    System.out.print("是否要购买该条线路的车票（是/否）: ");
+                    String check = in.nextLine();
+                    if(check.equals("是")) {
+                        buySomeTicketsByCity(userID, fromCity, fromCapital);
+                        buySomeTicketsByCity(userID, fromCapital, toCity);
+                    }
+                    return;
                 }
-                return;
             }
         }
         System.out.print("请输入您想购买的票的序号 (-1退出): ");
@@ -1623,7 +1647,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                                             from station s2\n" +
                 "                                             where s2.station_name = ''||?||'')\n" +
                 "                    and tt.price != 0) sub1\n" +
-                "                  join train t on t.train_id = sub1.train_id) sub2;";
+                "                  join train t on t.train_id = sub1.train_id and t.alive = 'Y') sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
             preparedStatement.setString(1, fromStation);
