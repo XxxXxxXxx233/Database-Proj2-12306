@@ -268,7 +268,7 @@ public class DatabaseOperation implements BasicOperation {
 
     @Override
     public String searchTicketFromOneCityToAnother(String fromCity, String toCity) throws SQLException {
-        System.out.println("---------- 从" + fromCity + "到" + toCity + "站有如下车票可选: ----------");
+        System.out.println("---------- 从" + fromCity + "到" + toCity + "有如下车票可选: ----------");
         System.out.println("票序号\t车次\t类型\t出发站\t出发时间\t到达站\t到达时间\t座位类型\t余量\t票价");
         Connection con = cp.getConnection();
         ResultSet resultSet;
@@ -550,7 +550,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("arrival_station")).append("\t");
                 sb.append(resultSet.getString("arrival_time")).append("\t");
                 sb.append(seatTypeMap.get(resultSet.getString("seat_type"))).append("\t");
-                sb.append(resultSet.getString("price")).append("\t");
+                sb.append(resultSet.getString("price"));
             }
         } catch (SQLException e) {
             throw e;
@@ -575,7 +575,7 @@ public class DatabaseOperation implements BasicOperation {
         int num = in.nextInt();
         if(num == -1)
             return;
-        int ticketType = ticketTypeArr.get(in.nextInt() - 1);
+        int ticketType = ticketTypeArr.get(num - 1);
         int orderID = createOneOrder(userID, fromCity, toCIty);
 
         System.out.print("请输入您想购买的张数: ");
@@ -605,8 +605,36 @@ public class DatabaseOperation implements BasicOperation {
         System.out.println(searchTicketFromOneCityToAnother(fromCity, toCity));
         ArrayList<Integer> ticketTypeArr = getTicketFromOneCityToAnother(fromCity, toCity);
         if(ticketTypeArr.size() == 0) {
-            System.out.println("未查询到有效车票");
-            return;
+            System.out.println("未查询到直达车票");
+            String fromCapital = getCapitalOfProvinceByCityName(fromCity);
+            String toCapital = getCapitalOfProvinceByCityName(toCity);
+            ticketTypeArr = getTicketFromOneCityToAnother(fromCapital, toCity);
+            if(ticketTypeArr.size() == 0) {
+                ticketTypeArr = getTicketFromOneCityToAnother(fromCapital, toCapital);
+                if(ticketTypeArr.size() == 0) {
+                    System.out.println("未查询到有效车票");
+                    return;
+                } else {
+                    System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCapital + " -> " + toCity);
+                    System.out.print("是否要购买该条线路的车票（是/否）: ");
+                    String check = in.nextLine();
+                    if(check.equals("是")) {
+                        buySomeTicketsByCity(userID, fromCity, fromCapital);
+                        buySomeTicketsByCity(userID, fromCapital, toCapital);
+                        buySomeTicketsByCity(userID, toCapital, toCity);
+                    }
+                    return;
+                }
+            } else {
+                System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCity);
+                System.out.print("是否要购买该条线路的车票（是/否）: ");
+                String check = in.nextLine();
+                if(check.equals("是")) {
+                    buySomeTicketsByCity(userID, fromCity, fromCapital);
+                    buySomeTicketsByCity(userID, fromCapital, toCity);
+                }
+                return;
+            }
         }
         System.out.print("请输入您想购买的票的序号 (-1退出): ");
         int num = in.nextInt();
@@ -1835,18 +1863,20 @@ public class DatabaseOperation implements BasicOperation {
         return id;
     }
 
-    //Just a model to create a function faster
- /*   private String template() throws SQLException {
+    private String getCapitalOfProvinceByCityName(String cityName) throws SQLException {
         Connection con = cp.getConnection();
         ResultSet resultSet;
         StringBuilder sb = new StringBuilder();
-        String sql = "";
+        String sql = "select capital\n" +
+                "from province_capital\n" +
+                "         join city c on province_capital.province_name = c.province_name\n" +
+                "where c.city_name = ''||?||'';";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, 1);
+            preparedStatement.setString(1, cityName);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                sb.append(resultSet.getString("order_id")).append("\t");
+                sb.append(resultSet.getString("capital"));
             }
         } catch (SQLException e) {
             throw e;
@@ -1854,7 +1884,7 @@ public class DatabaseOperation implements BasicOperation {
             cp.releaseConnection(con);
         }
         return sb.toString();
-    }*/
+    }
 
 }
 

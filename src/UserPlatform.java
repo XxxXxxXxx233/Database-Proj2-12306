@@ -101,9 +101,10 @@ public class UserPlatform implements DataModification {
     @Override
     public void trainInsert() throws SQLException {
         if(d.isAdministrator(this.currentUser)) {
-            System.out.println("请输入新车次基本信息: ");
             in.nextLine();
-            String[] basicInfo = in.nextLine().split(" ");
+            System.out.print("请输入新车次基本信息: ");
+            String basic = in.nextLine();
+            String[] basicInfo = basic.split(" ");
             if(!d.checkExistingTrain(basicInfo[0])) {
                 System.out.println("该车次已存在");
                 return;
@@ -113,7 +114,8 @@ public class UserPlatform implements DataModification {
             int num = Integer.parseInt(in.nextLine());
             String[][] detailInfo = new String[num][];
             for(int i=0; i<num; i++) {
-                detailInfo[i] = in.nextLine().split(" ");
+                String detail = in.nextLine();
+                detailInfo[i] = detail.split(" ");
             }
             System.out.println(d.insertTrainDetailInfo(basicInfo[0], detailInfo));
             System.out.println("新建成功");
