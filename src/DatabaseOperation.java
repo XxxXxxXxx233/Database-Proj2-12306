@@ -98,7 +98,7 @@ public class DatabaseOperation implements BasicOperation {
                 sb.append(resultSet.getString("start_station")).append("\t");
                 sb.append(resultSet.getString("end_station")).append("\t");
                 sb.append(resultSet.getString("total_time")).append("\t");
-                sb.append(resultSet.getString("total_mile")).append("\t");
+                sb.append(resultSet.getString("total_mile"));
                 sb.append(System.lineSeparator());
             }
         } catch (SQLException e) {
@@ -423,6 +423,7 @@ public class DatabaseOperation implements BasicOperation {
             System.out.print("请输入要查询的订单id: ");
             ArrayList<Integer> orderIDArr = getOrderInformation(userID);
             int orderID = orderIDArr.get(in.nextInt() - 1);
+            in.nextLine();
             System.out.println("---------- 该订单下所有车票如下: ----------");
             System.out.print(searchTicketInformationInAnOrder(orderID));
         }
@@ -480,7 +481,7 @@ public class DatabaseOperation implements BasicOperation {
                 "    select *\n" +
                 "    from order_user_ticket\n" +
                 "    where order_id = ?) sub1\n" +
-                "              on sub1.ticket_id = t.ticket_id;";
+                "              on sub1.ticket_id = t.ticket_id order by sub1.ticket_id;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, orderID);
@@ -573,6 +574,7 @@ public class DatabaseOperation implements BasicOperation {
         }
         System.out.print("请输入您想购买的票的序号 (-1退出): ");
         int num = in.nextInt();
+        in.nextLine();
         if(num == -1)
             return;
         int ticketType = ticketTypeArr.get(num - 1);
@@ -580,7 +582,7 @@ public class DatabaseOperation implements BasicOperation {
 
         System.out.print("请输入您想购买的张数: ");
         int number = in.nextInt();
-
+        in.nextLine();
         System.out.println("请输入乘客信息（姓名/身份证号）: ");
         ArrayList<passengerInfo> passengerInfoArr = new ArrayList<>();
         for(int i=0; i<number; i++) {
@@ -615,15 +617,21 @@ public class DatabaseOperation implements BasicOperation {
                     System.out.println("未查询到有效车票");
                     return;
                 } else {
-                    System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCapital + " -> " + toCity);
-                    System.out.print("是否要购买该条线路的车票（是/否）: ");
-                    String check = in.nextLine();
-                    if(check.equals("是")) {
-                        buySomeTicketsByCity(userID, fromCity, fromCapital);
-                        buySomeTicketsByCity(userID, fromCapital, toCapital);
-                        buySomeTicketsByCity(userID, toCapital, toCity);
+                    ticketTypeArr = getTicketFromOneCityToAnother(toCapital, toCity);
+                    if(ticketTypeArr.size() == 0) {
+                        System.out.println("未查询到有效车票");
+                        return;
+                    } else {
+                        System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCapital + " -> " + toCity);
+                        System.out.print("是否要购买该条线路的车票（是/否）: ");
+                        String check = in.nextLine();
+                        if(check.equals("是")) {
+                            buySomeTicketsByCity(userID, fromCity, fromCapital);
+                            buySomeTicketsByCity(userID, fromCapital, toCapital);
+                            buySomeTicketsByCity(userID, toCapital, toCity);
+                        }
+                        return;
                     }
-                    return;
                 }
             } else {
                 System.out.println("查询到有效路线: " + fromCity + " -> " + fromCapital + " -> " + toCity);
@@ -638,6 +646,7 @@ public class DatabaseOperation implements BasicOperation {
         }
         System.out.print("请输入您想购买的票的序号 (-1退出): ");
         int num = in.nextInt();
+        in.nextLine();
         if(num == -1)
             return;
         int ticketType = ticketTypeArr.get(num - 1);
@@ -645,7 +654,7 @@ public class DatabaseOperation implements BasicOperation {
 
         System.out.print("请输入您想购买的张数: ");
         int number = in.nextInt();
-
+        in.nextLine();
         System.out.println("请输入乘客信息（姓名/身份证号）: ");
         ArrayList<passengerInfo> passengerInfoArr = new ArrayList<>();
         for(int i=0; i<number; i++) {
@@ -669,6 +678,7 @@ public class DatabaseOperation implements BasicOperation {
         ArrayList<Integer> orderIDArr = getOrderInformation(userID);
         System.out.print("请选择要退票的订单id: ");
         int orderID = orderIDArr.get(in.nextInt() - 1);
+        in.nextLine();
         System.out.println("---------- 该订单下所有车票如下: ----------");
         System.out.print(searchTicketInformationInAnOrder(orderID));
         System.out.print("取消订单（1）还是退部分票（2）: ");
