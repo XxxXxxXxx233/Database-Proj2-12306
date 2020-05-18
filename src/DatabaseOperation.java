@@ -313,7 +313,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                                             where s2.station_name in (select station_name\n" +
                 "                                                                      from station\n" +
                 "                                                                      where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
-                "                    and tt.price != 0) sub1\n" +
+                "                    and tt.price != 0 and tt.rest_num > 0) sub1\n" +
                 "                  join train t on t.train_id = sub1.train_id) sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
@@ -384,7 +384,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                    and tt.arrive_station = (select s2.station_id as to_id\n" +
                 "                                             from station s2\n" +
                 "                                             where s2.station_name = ''||?||'')\n" +
-                "                    and tt.price != 0) sub1\n" +
+                "                    and tt.price != 0 and tt.rest_num > 0) sub1\n" +
                 "                  join train t on t.train_id = sub1.train_id and t.alive = 'Y') sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
@@ -578,11 +578,16 @@ public class DatabaseOperation implements BasicOperation {
         if(num == -1)
             return;
         int ticketType = ticketTypeArr.get(num - 1);
-        int orderID = createOneOrder(userID, fromCity, toCIty);
-
+        int rest_num = getRestNumByTicketType(ticketType);
         System.out.print("请输入您想购买的张数: ");
         int number = in.nextInt();
         in.nextLine();
+        if(number > rest_num) {
+            System.out.println("购买数量超过剩余数量");
+            return;
+        }
+
+        int orderID = createOneOrder(userID, fromCity, toCIty);
         System.out.println("请输入乘客信息（姓名/身份证号）: ");
         ArrayList<passengerInfo> passengerInfoArr = new ArrayList<>();
         for(int i=0; i<number; i++) {
@@ -674,11 +679,16 @@ public class DatabaseOperation implements BasicOperation {
         if(num == -1)
             return;
         int ticketType = ticketTypeArr.get(num - 1);
-        int orderID = createOneOrder(userID, fromCityID, toCItyID);
+        int rest_num = getRestNumByTicketType(ticketType);
 
         System.out.print("请输入您想购买的张数: ");
         int number = in.nextInt();
         in.nextLine();
+        if(number > rest_num) {
+            System.out.println("购买数量超过剩余数量");
+            return;
+        }
+        int orderID = createOneOrder(userID, fromCityID, toCItyID);
         System.out.println("请输入乘客信息（姓名/身份证号）: ");
         ArrayList<passengerInfo> passengerInfoArr = new ArrayList<>();
         for(int i=0; i<number; i++) {
@@ -1646,7 +1656,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                    and tt.arrive_station = (select s2.station_id as to_id\n" +
                 "                                             from station s2\n" +
                 "                                             where s2.station_name = ''||?||'')\n" +
-                "                    and tt.price != 0) sub1\n" +
+                "                    and tt.price != 0 and tt.rest_num > 0) sub1\n" +
                 "                  join train t on t.train_id = sub1.train_id and t.alive = 'Y') sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
@@ -1705,7 +1715,7 @@ public class DatabaseOperation implements BasicOperation {
                 "                                              where s2.station_name in (select station_name\n" +
                 "                                                                        from station\n" +
                 "                                                                        where city_id = (select city_id from city where city_name = ''||?||'')))\n" +
-                "                    and tt.price != 0) sub1\n" +
+                "                    and tt.price != 0 and tt.rest_num > 0) sub1\n" +
                 "                  join train t on t.train_id = sub1.train_id) sub2;";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(sqlBasicInfo);
@@ -1918,6 +1928,26 @@ public class DatabaseOperation implements BasicOperation {
             cp.releaseConnection(con);
         }
         return sb.toString();
+    }
+
+    private int getRestNumByTicketType(int TicketType) throws SQLException {
+        Connection con = cp.getConnection();
+        ResultSet resultSet;
+        int num = 0;
+        String sql = "select rest_num from ticket_type where ticket_type_id = ?;";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setInt(1, TicketType);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                num = Integer.parseInt(resultSet.getString("rest_num"));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return num;
     }
 
 }
