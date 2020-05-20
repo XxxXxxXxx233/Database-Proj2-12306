@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.BuyTicket.BuyTicketviewController">
+   <children>
+      <Separator layoutX="50.0" layoutY="238.0" prefHeight="3.0" prefWidth="900.0" />
+      <Text layoutX="463.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="车票查询">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Text>
+      <Text layoutX="178.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="按起始城市查询">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="651.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="按起始站点查询">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Separator layoutX="526.0" layoutY="98.0" orientation="VERTICAL" prefHeight="128.0" prefWidth="4.0" />
+      <Text layoutX="108.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="目的城市:" />
+      <Text layoutX="108.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="出发城市：" />
+      <Text layoutX="567.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="出发站点:" />
+      <Text layoutX="567.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="目的站点:" />
+      <TextField fx:id="fromCityField" layoutX="195.0" layoutY="152.0" />
+      <TextField fx:id="toCityField" layoutX="195.0" layoutY="195.0" />
+      <TextField fx:id="fromStationField" layoutX="651.0" layoutY="148.0" />
+      <TextField fx:id="toStationField" layoutX="651.0" layoutY="191.0" />
+      <Button layoutX="438.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleCityTicketQuery" text="查询" />
+      <Button layoutX="900.0" layoutY="176.0" mnemonicParsing="false" onAction="#handleStationTicketQuery" text="查询" />
+      <TableView fx:id="TicketInformationTable" layoutX="50.0" layoutY="259.0" prefHeight="487.0" prefWidth="900.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+        <columns>
+          <TableColumn fx:id="TicketOrderColumn" prefWidth="90.0" text="票序号" />
+          <TableColumn fx:id="TrainNumberColumn" prefWidth="90.0" text="车次" />
+            <TableColumn fx:id="TrainTypeColumn" prefWidth="90.0" text="类型" />
+            <TableColumn fx:id="fromStationColumn" prefWidth="90.0" text="出发站" />
+            <TableColumn fx:id="DepartTimeColumn" prefWidth="90.0" text="出发时间" />
+            <TableColumn fx:id="toStationColumn" prefWidth="90.0" text="到达站" />
+            <TableColumn fx:id="ArriveTimeColumn" prefWidth="90.0" text="到达时间" />
+            <TableColumn fx:id="SeatTypeColumn" prefWidth="90.0" text="座位类型" />
+            <TableColumn fx:id="TicketRestNumColumn" prefWidth="90.0" text="余量" />
+            <TableColumn fx:id="PriceColumn" prefWidth="90.0" text="票价" />
+        </columns>
+      </TableView>
+      <Button layoutX="889.0" layoutY="756.0" mnemonicParsing="false" onAction="#handlepurchase" text="购买" />
+      <Text fill="#d00d0d" layoutX="50.0" layoutY="777.0" strokeType="OUTSIDE" strokeWidth="0.0" text="（注：在表中点击选择一张票后点击右下角购买按钮即可进行订票）" />
+   </children>
+</AnchorPane>

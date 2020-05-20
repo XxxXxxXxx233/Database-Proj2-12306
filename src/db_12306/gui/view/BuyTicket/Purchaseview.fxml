@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.BuyTicket.PurchaseviewController">
+   <children>
+      <Text layoutX="23.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="添加乘客信息：">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="NameField" layoutX="103.0" layoutY="51.0" prefHeight="30.0" prefWidth="140.0" />
+      <TextField fx:id="IdnumberField" layoutX="103.0" layoutY="91.0" prefHeight="30.0" prefWidth="140.0" />
+      <Text layoutX="63.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="姓名：" />
+      <Text layoutX="18.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="身份证号码：" />
+      <Button layoutX="268.0" layoutY="66.0" mnemonicParsing="false" onAction="#handleNewPerson" text="添加" />
+      <TableView fx:id="PassengerInfoTable" layoutX="30.0" layoutY="183.0" prefHeight="256.0" prefWidth="300.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
+        <columns>
+          <TableColumn fx:id="NameColumn" prefWidth="150.0" text="姓名" />
+          <TableColumn fx:id="IdnumberColumn" prefWidth="150.0" text="身份证号码" />
+        </columns>
+      </TableView>
+      <Text layoutX="26.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="注：填写乘客姓名、身份证号后，点击添加可以将该用户加入乘客列表" wrappingWidth="294.0" />
+      <Button layoutX="139.0" layoutY="456.0" mnemonicParsing="false" onAction="#handleDeletePerson" text="删除乘客" />
+      <Button layoutX="141.0" layoutY="535.0" mnemonicParsing="false" onAction="#justbuyit" text="确认购买" />
+   </children>
+</AnchorPane>

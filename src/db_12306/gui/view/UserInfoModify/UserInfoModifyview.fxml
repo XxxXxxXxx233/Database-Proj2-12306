@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.UserInfoModify.UserInfoModifyviewController">
+   <children>
+      <GridPane layoutX="56.0" layoutY="275.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="10.0" prefWidth="120.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="150.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="250.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="109.0" text="账号：" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="108.0" text="密码：" textAlignment="CENTER" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="110.0" text="用户名：" textAlignment="JUSTIFY" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" prefHeight="20.0" prefWidth="111.0" text="手机号码：" textAlignment="JUSTIFY" GridPane.rowIndex="4" />
+            <TextField fx:id="accountField" prefHeight="30.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="passwordField" prefHeight="30.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="nameField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="phoneNumberField" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="accountLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="passwordLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="159.0" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="153.0" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="phoneNumberLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="157.0" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="109.0" text="信息类型" textAlignment="CENTER" wrapText="true" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="152.0" text="当前信息" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="267.0" text="目标信息" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <Text layoutX="325.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户信息修改">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Button layoutX="620.0" layoutY="318.0" mnemonicParsing="false" onAction="#handleModifyAccount" text="修改账号" />
+      <Button layoutX="613.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleModifyName" text="修改用户名" />
+      <Button layoutX="606.0" layoutY="472.0" mnemonicParsing="false" onAction="#handleModifyPhoneNumber" text="修改手机号码" />
+      <Button layoutX="620.0" layoutY="368.0" mnemonicParsing="false" onAction="#handleModifypassword" text="修改密码" />
+      <Button layoutX="570.0" layoutY="131.0" mnemonicParsing="false" onAction="#handlepasswordCheck" text="检测" />
+      <Text layoutX="64.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.当前用户检测">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TextField fx:id="passwordCheckField" layoutX="340.0" layoutY="131.0" />
+      <Text layoutX="153.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="请输入当前用户密码：">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Label fx:id="passwordCheckResultLabel" layoutX="522.0" layoutY="176.0" />
+      <Text layoutX="76.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.信息修改">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="64.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="（注：若没有通过检测无法修改用户信息）" />
+      <Separator layoutX="63.0" layoutY="205.0" prefHeight="5.0" prefWidth="693.0" />
+      <Button layoutX="674.0" layoutY="16.0" mnemonicParsing="false" onAction="#goback" text="返回上一级" />
+   </children>
+</AnchorPane>

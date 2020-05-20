@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="724.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.OrderQueryandRefund.OrderQueryviewController">
+   <children>
+      <Text layoutX="502.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="订单查询">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <TableView fx:id="OrderListTable" layoutX="50.0" layoutY="89.0" prefHeight="213.0" prefWidth="1000.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+        <columns>
+          <TableColumn fx:id="OrderorderColumn" prefWidth="160.0" text="订单号" />
+          <TableColumn fx:id="CreateTimeColumn" prefWidth="200.0" text="创建时间" />
+            <TableColumn fx:id="OrderStatusColumn" prefWidth="160.0" text="订单状态" />
+            <TableColumn fx:id="fromCityColumn" prefWidth="160.0" text="出发城市" />
+            <TableColumn fx:id="toCityColumn" prefWidth="160.0" text="到达城市" />
+            <TableColumn fx:id="TicketNumColumn" prefWidth="160.0" text="车票数" />
+        </columns>
+      </TableView>
+      <Text layoutX="50.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="当前用户订单列表：">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="50.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="（注：（1）点击其中的一项，可在下方详细信息表中看到该订单更完整的信息；" />
+      <Text layoutX="54.0" layoutY="393.0" strokeType="OUTSIDE" strokeWidth="0.0" text="订单详细信息：">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <TableView fx:id="OrderDetailInfoTable" layoutX="39.0" layoutY="399.0" prefHeight="282.0" prefWidth="1040.0">
+         <columns>
+            <TableColumn fx:id="OrderColumn" text="序号" />
+            <TableColumn fx:id="TrainNumberColumn" text="车次" />
+            <TableColumn fx:id="TrainTypeColumn" text="类型" />
+            <TableColumn fx:id="fromStationColumn" text="出发站" />
+            <TableColumn fx:id="departTimeColumn" text="出发时间" />
+            <TableColumn fx:id="toStationColumn" text="到达站" />
+            <TableColumn fx:id="arriveTimeColumn" text="到达时间" />
+            <TableColumn fx:id="SeatTypeColumn" text="座位类型" />
+            <TableColumn fx:id="PriceColumn" text="票价" />
+            <TableColumn fx:id="PassengerNameColumn" text="乘车人" />
+            <TableColumn fx:id="CarriageNumColumn" text="车厢号" />
+            <TableColumn fx:id="SeatNumColumn" text="座位号" />
+            <TableColumn fx:id="StatusColumn" text="状态" />
+            <TableColumn text="到达城市" />
+            <TableColumn text="车票数" />
+         </columns>
+      </TableView>
+      <Button layoutX="955.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleDeleteOrder" text="取消该订单" />
+      <Button layoutX="1017.0" layoutY="689.0" mnemonicParsing="false" onAction="#handleDeleteTicket" text="退票" />
+      <Text layoutX="820.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="50.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="          （2）点击其中的一项，点击右方的“取消该订单”按钮，可以取消选中的订单。）" />
+      <Text layoutX="39.0" layoutY="703.0" strokeType="OUTSIDE" strokeWidth="0.0" text="（注：点击其中的一项，点击右方的“退票”按钮，可以退掉选中的票）" />
+   </children>
+</AnchorPane>

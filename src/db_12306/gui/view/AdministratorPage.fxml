@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="535.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.AdministratorPageController">
+   <children>
+      <Label layoutX="243.0" layoutY="94.0" text="欢迎使用以下服务！" textFill="#1579bc" AnchorPane.leftAnchor="243.0" AnchorPane.rightAnchor="251.0">
+         <font>
+            <Font name="Impact" size="34.0" />
+         </font>
+      </Label>
+      <Separator layoutX="253.0" layoutY="144.0" orientation="VERTICAL" prefHeight="346.0" prefWidth="3.0" />
+      <Separator layoutX="51.0" layoutY="333.0" prefHeight="3.0" prefWidth="692.0" />
+      <Ellipse layoutX="134.0" layoutY="210.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#d2f707" />
+                  <Stop color="#d2f707" offset="0.7206896551724138" />
+                  <Stop color="BLACK" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Ellipse layoutX="401.0" layoutY="210.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#f50707" />
+                  <Stop color="#f50707" offset="0.7517241379310344" />
+                  <Stop color="BLACK" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Ellipse layoutX="135.0" layoutY="399.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#0ae4f2" />
+                  <Stop color="#0ae4f2" offset="0.7206896551724138" />
+                  <Stop color="#111214" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Ellipse layoutX="400.0" layoutY="399.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#39f507" />
+                  <Stop color="#39f507" offset="0.7206896551724138" />
+                  <Stop color="BLACK" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Text layoutX="107.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="查询" wrappingWidth="55.0">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Text>
+      <Button layoutX="111.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleQuery" text="选择" />
+      <Text layoutX="374.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="订票" wrappingWidth="55.0">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Text>
+      <Button layoutX="376.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleBuyTicket" text="选择" />
+      <Button layoutX="111.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleOrderQurey" text="选择" />
+      <Button layoutX="375.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleModifyInformation" text="选择" />
+      <Text layoutX="64.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="订单查询、退票" wrappingWidth="144.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="337.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="个人信息修改" wrappingWidth="127.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="499.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="欢迎管理员" wrappingWidth="126.99999809265137" AnchorPane.rightAnchor="174.00000190734863">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Label fx:id="accountLabel" layoutX="617.0" layoutY="29.0" text="User" AnchorPane.rightAnchor="120.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button layoutX="674.0" layoutY="24.0" mnemonicParsing="false" onAction="#handleLogout" text="退出系统" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" />
+      <Separator layoutX="530.0" layoutY="144.0" orientation="VERTICAL" prefHeight="346.0" prefWidth="3.0" />
+      <Ellipse layoutX="661.0" layoutY="210.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#440af2" />
+                  <Stop color="#570af2" offset="0.7517241379310343" />
+                  <Stop color="BLACK" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Ellipse layoutX="660.0" layoutY="399.0" radiusX="90.0" radiusY="43.0" stroke="BLACK" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#f507bf" />
+                  <Stop color="#f507a3" offset="0.7206896551724138" />
+                  <Stop color="BLACK" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Ellipse>
+      <Text fill="#f5f3f3" layoutX="603.0" layoutY="216.0" strokeType="OUTSIDE" strokeWidth="0.0" text="修改列车数据" wrappingWidth="126.99999809265137">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Button layoutX="636.0" layoutY="273.0" mnemonicParsing="false" onAction="#handleModifyTrain" text="选择" />
+      <Button layoutX="635.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleModifyStation" text="选择" />
+      <Text layoutX="597.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="修改车站信息" wrappingWidth="127.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

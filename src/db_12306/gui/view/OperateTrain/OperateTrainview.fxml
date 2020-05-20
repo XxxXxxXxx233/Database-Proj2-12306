@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="db_12306.gui.view.OperateTrain.OperateTrainviewController">
+   <children>
+      <Circle layoutX="208.0" layoutY="250.0" radius="100.0" stroke="#00000001" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#1f93ffd7" />
+                  <Stop color="WHITE" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Circle>
+      <Circle layoutX="590.0" layoutY="250.0" radius="100.0" stroke="TRANSPARENT" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.5113636363636364" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#ed478f" />
+                  <Stop color="#ffffff94" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Circle>
+      <Text layoutX="187.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="欢迎使用车站信息修改功能！">
+         <font>
+            <Font name="Candara" size="33.0" />
+         </font>
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#11733fa3" />
+                  <Stop color="#0a1854" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Text>
+      <Text layoutX="150.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="新增列车">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Text>
+      <Text layoutX="539.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="删除列车">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Text>
+      <Button layoutX="181.0" layoutY="383.0" mnemonicParsing="false" onAction="#handleInsertTrain" text="选择">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Text layoutX="324.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="请选择具体功能" textAlignment="CENTER">
+         <font>
+            <Font name="DSISO1" size="22.0" />
+         </font>
+         <fill>
+            <RadialGradient centerX="0.5113636363636364" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#2f4b75" />
+                  <Stop color="#0a1854" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
+      <Separator layoutX="398.0" layoutY="183.0" orientation="VERTICAL" prefHeight="200.0" />
+      <Button layoutX="570.0" layoutY="383.0" mnemonicParsing="false" onAction="#handleDeleteTrain" text="选择">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
